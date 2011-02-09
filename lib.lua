@@ -437,7 +437,7 @@
     --count
     button.count:ClearAllPoints()
     button.count:SetJustifyH("RIGHT")
-    button.count:SetPoint("BOTTOMRIGHT", 2, -2)
+    button.count:SetPoint("TOPRIGHT", 2, 2)
     button.count:SetTextColor(0.7,0.7,0.7)
     --helper
     local h = CreateFrame("Frame", nil, button)
