@@ -32,7 +32,7 @@
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
     lib.gen_castbar(self)
-    lib.gen_portrait(self)
+    --lib.gen_portrait(self)
     lib.gen_mirrorcb(self)
     lib.gen_ppstrings(self)
     lib.gen_Runes(self)
@@ -58,7 +58,7 @@
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
     lib.gen_castbar(self)
-    lib.gen_portrait(self)
+    --lib.gen_portrait(self)
     lib.createAuras(self)
     lib.gen_ppstrings(self)
     lib.gen_cp(self)

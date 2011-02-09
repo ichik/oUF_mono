@@ -32,17 +32,19 @@
   end
 
   --backdrop table
+  local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/GetCVar("uiScale")
+  local function scale(x) return mult*math.floor(x+.5) end
   local backdrop_tab = { 
     bgFile = cfg.backdrop_texture, 
     edgeFile = cfg.backdrop_edge_texture,
-    tile = false, tileSize = 0, edgeSize = 5, 
-    insets = {left = 5, right = 5, top = 5, bottom = 5,},}
+    tile = false, tileSize = 0, edgeSize = scale(1), 
+	insets = { left = -scale(1), right = -scale(1), top = -scale(1), bottom = -scale(1)}}
   
   --backdrop func
   lib.gen_backdrop = function(f)
     f:SetBackdrop(backdrop_tab);
-    f:SetBackdropColor(.1,.1,.2,1)
-    f:SetBackdropBorderColor(0,0,0,1)
+    f:SetBackdropColor(.1,.1,.1,1)
+    f:SetBackdropBorderColor(.3,.3,.3,1)
   end
   
   --right click menu
@@ -101,8 +103,8 @@
     --helper
     local h = CreateFrame("Frame", nil, s)
     h:SetFrameLevel(0)
-    h:SetPoint("TOPLEFT",-4,4)
-    h:SetPoint("BOTTOMRIGHT",4,-4)
+    h:SetPoint("TOPLEFT",0,0)
+    h:SetPoint("BOTTOMRIGHT",0,0)
     lib.gen_backdrop(h)
     --bg
     local b = s:CreateTexture(nil, "BACKGROUND")
@@ -154,7 +156,7 @@
     s:SetStatusBarTexture(cfg.statusbar_texture)
     fixStatusbar(s)
     s:SetHeight(f.height/2.5)
-    s:SetWidth(f.width-1)
+    s:SetWidth(f.width)
     s:SetPoint("TOP",f,"BOTTOM",0,-2)
     if f.mystyle == "partypet" or f.mystyle == "arenatarget" then
       s:Hide()
@@ -162,8 +164,8 @@
     --helper
     local h = CreateFrame("Frame", nil, s)
     h:SetFrameLevel(0)
-    h:SetPoint("TOPLEFT",-4,4)
-    h:SetPoint("BOTTOMRIGHT",4,-4)
+    h:SetPoint("TOPLEFT",0,0)
+    h:SetPoint("BOTTOMRIGHT",0,0)
     lib.gen_backdrop(h)
     --bg
     local b = s:CreateTexture(nil, "BACKGROUND")
@@ -230,8 +232,8 @@
     --helper
     local h = CreateFrame("Frame", nil, s)
     h:SetFrameLevel(0)
-    h:SetPoint("TOPLEFT",-4,4)
-    h:SetPoint("BOTTOMRIGHT",4,-4)
+    h:SetPoint("TOPLEFT",0,0)
+    h:SetPoint("BOTTOMRIGHT",0,0)
     lib.gen_backdrop(h)
     --backdrop
     local b = s:CreateTexture(nil, "BACKGROUND")
@@ -259,8 +261,8 @@
     --helper2 for icon
     local h2 = CreateFrame("Frame", nil, s)
     h2:SetFrameLevel(0)
-    h2:SetPoint("TOPLEFT",i,"TOPLEFT",-5,5)
-    h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",5,-5)
+    h2:SetPoint("TOPLEFT",i,"TOPLEFT",-scale(2),scale(2))
+    h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",scale(2),-scale(2))
     lib.gen_backdrop(h2)
     if f.mystyle == "focus" and cfg.focusCBuserplaced then
       lib.moveme(s)
@@ -353,8 +355,8 @@
       --glowing borders
       local h = CreateFrame("Frame", nil, _G[bar])
       h:SetFrameLevel(0)
-      h:SetPoint("TOPLEFT",-4,4)
-      h:SetPoint("BOTTOMRIGHT",4,-4)
+      h:SetPoint("TOPLEFT",0,0)
+      h:SetPoint("BOTTOMRIGHT",0,0)
       lib.gen_backdrop(h)
     end
   end
@@ -440,33 +442,33 @@
     --helper
     local h = CreateFrame("Frame", nil, button)
     h:SetFrameLevel(0)
-    h:SetPoint("TOPLEFT",-4,4)
-    h:SetPoint("BOTTOMRIGHT",4,-4)
+    h:SetPoint("TOPLEFT",-scale(2),scale(2))
+    h:SetPoint("BOTTOMRIGHT",scale(2),-scale(2))
     lib.gen_backdrop(h)
     --another helper frame for our fontstring to overlap the cd frame
     local h2 = CreateFrame("Frame", nil, button)
     h2:SetAllPoints(button)
     h2:SetFrameLevel(10)
     button.remaining = lib.gen_fontstring(h2, cfg.font, cfg.ATSize, "THINOUTLINE")
-    button.remaining:SetPoint("TOP", 0, -2)
+    button.remaining:SetPoint("BOTTOM", 0, -1)
     --overlay texture for debuff types display
     button.overlay:SetTexture(cfg.auratex)
-    button.overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -1.6, 1.6)
-    button.overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1.6, -1.6)
+    button.overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -scale(2), scale(2))
+    button.overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", scale(2), -scale(2))
     button.overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
-    button.overlay.Hide = function(self) self:SetVertexColor(0, 0, 0) end
+    button.overlay.Hide = function(self) self:SetVertexColor(0, 0, 0, 0) end
   end
 
   --auras for certain frames
   lib.createAuras = function(f)
     a = CreateFrame('Frame', nil, f)
-    a:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1.5, 4)
+    a:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', scale(2), scale(6))
     a['growth-x'] = 'RIGHT'
     a['growth-y'] = 'UP' 
     a.initialAnchor = 'BOTTOMLEFT'
     a.gap = true
-    a.spacing = 6.1
-    a.size = 20
+    a.spacing = scale(8)
+    a.size = scale(22)
     a.showDebuffType = true
 	--a.onlyShowPlayer = true
     if f.mystyle=="target" or (f.mystyle=="player" and cfg.playerauras) then
@@ -475,9 +477,9 @@
         a:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
       end
       a:SetHeight((a.size+a.spacing)*2)
-      a:SetWidth((a.size+a.spacing)*9)
-      a.numBuffs = 20 
-      a.numDebuffs = 20
+      a:SetWidth((a.size+a.spacing)*8)
+      a.numBuffs = 16
+      a.numDebuffs = 16
     elseif f.mystyle=="focus" then
       a.spacing = 5
       a:SetHeight((a.size+a.spacing)*2)
@@ -495,25 +497,25 @@
     b.initialAnchor = "TOPLEFT"
     b["growth-y"] = "DOWN"
     b.num = 5
-    b.size = 18
-    b.spacing = 4.5
+    b.size = scale(20)
+    b.spacing = scale(8)
     b:SetHeight((b.size+b.spacing)*2)
     b:SetWidth((b.size+b.spacing)*12)
     if f.mystyle=="pet" then
       b.initialAnchor = "TOPRIGHT"
-      b:SetPoint("TOPRIGHT", f, "TOPLEFT", -b.spacing, -2)
+      b:SetPoint("TOPRIGHT", f, "TOPLEFT", -b.spacing, -scale(2))
       b["growth-x"] = "LEFT"
     elseif f.mystyle=="tot" then
-      b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -2)
+      b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -scale(2))
     elseif f.mystyle=="arena" then
       b.showBuffType = true
-      b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -2)
+      b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -scale(2))
       b.num = 4
       b:SetWidth((b.size+b.spacing)*4)
     elseif f.mystyle=='party' then
-      b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -b.spacing)
-      b.num = 9
-      b.spacing = 4
+      b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", scale(2), -b.spacing)
+      b.num = 8
+      b.spacing = scale(8)
     end
     b.PostCreateIcon = lib.PostCreateIcon
     b.PostUpdateIcon = lib.PostUpdateIcon
@@ -525,16 +527,16 @@
     d.initialAnchor = "TOPRIGHT"
     d["growth-y"] = "DOWN"
     d.num = 4
-    d.size = 18
-    d.spacing = 4.5
+    d.size = scale(20)
+    d.spacing = scale(8)
     d:SetHeight((d.size+d.spacing)*2)
     d:SetWidth((d.size+d.spacing) * 5)
     d.showDebuffType = true
     if f.mystyle=="pet" then
-      d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -2)
+      d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -scale(2))
       d.initialAnchor = "TOPLEFT"
     elseif f.mystyle=="tot" then
-      d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -2)
+      d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -scale(2))
       d["growth-x"] = "LEFT"
     elseif f.mystyle=="arena" then
       d.showDebuffType = false
@@ -544,7 +546,7 @@
       d:SetWidth((d.size+d.spacing)*4)
     elseif f.mystyle=='party' then
       d.num = 8
-      d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -2)
+      d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -scale(2))
       d["growth-x"] = "LEFT"
       d:SetWidth((d.size+d.spacing)*4)
     end
@@ -781,7 +783,7 @@ end
     t.bg:SetBackdropColor(0,0,0,0)
     t.bg:SetBackdropBorderColor(0,0,0,1)
 	t.remaining = lib.gen_fontstring(t, cfg.font, cfg.ATSize-2, "THINOUTLINE")
-	t.remaining:SetPoint('CENTER', t, 0, 0)
+	t.remaining:SetPoint('BOTTOM', t, 0, 0)
     t:SetScript("OnUpdate", lib.CreateAuraTimer)
     f.Trinket = t
   end
@@ -808,8 +810,8 @@ end
     fhp.bg:SetVertexColor(.3,.3,.3)
     local h = CreateFrame("Frame",nil,fhp)
     h:SetBackdrop(backdrop_tab)
-    h:SetPoint("TOPLEFT",-3.5,3.5)
-    h:SetPoint("BOTTOMRIGHT",3.5,-3.5)
+    h:SetPoint("TOPLEFT",-scale(1),scale(1))
+    h:SetPoint("BOTTOMRIGHT",scale(1),-scale(1))
     h:SetBackdropColor(0,0,0,0)
     h:SetBackdropBorderColor(0,0,0,0.5)
 
@@ -824,8 +826,8 @@ end
     fpp.bg:SetVertexColor(.30,.45,.65)
     local h2 = CreateFrame("Frame",nil,fpp)
     h2:SetBackdrop(backdrop_tab)
-    h2:SetPoint("TOPLEFT",-3.5,3.5)
-    h2:SetPoint("BOTTOMRIGHT",3.5,-3.5)
+    h2:SetPoint("TOPLEFT",-scale(1),scale(1))
+    h2:SetPoint("BOTTOMRIGHT",scale(1),-scale(1))
     h2:SetBackdropColor(0,0,0,0)
     h2:SetBackdropBorderColor(0,0,0,0.5)
 

@@ -7,12 +7,14 @@
   -- local variables
   -----------------------------
   local _, class = UnitClass("player")
+  local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/GetCVar("uiScale")
+  local function scale(x) return mult*math.floor(x+.5) end
   local backdrop = {
       bgFile = cfg.highlightTex,
       insets = {top = 0, left = 0, bottom = 0, right = 0}}
   local glowBorder = {
-      edgeFile = cfg.backdrop_edge_texture, edgeSize = 5,
-      insets = {left = 3, right = 3, top = 3, bottom = 3}}
+      edgeFile = cfg.backdrop_edge_texture, edgeSize = 1,
+      insets = {left = -1, right = -1, top = -1, bottom = -1}}
   local border = {
       bgFile = cfg.highlightTex,
       insets = {top = -1, left = -1, bottom = -1, right = -1}}
@@ -278,8 +280,8 @@
     
     -- Threat
     local t = CreateFrame("Frame", nil, f)
-    t:SetPoint("TOPLEFT", f, "TOPLEFT", -4, 4)
-    t:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 4, -4)
+    t:SetPoint("TOPLEFT", f, "TOPLEFT", -scale(1), scale(1))
+    t:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", scale(1), -scale(1))
     t:SetFrameStrata("LOW")
     t:SetBackdrop(glowBorder)
     t:SetBackdropColor(0, 0, 0, 0)

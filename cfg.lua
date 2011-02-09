@@ -8,8 +8,8 @@
   cfg.statusbar_texture = MediaPath.."statusbar"
   cfg.auratex = MediaPath.."iconborder" 
   cfg.font = MediaPath.."font.ttf"
-  cfg.backdrop_texture = MediaPath.."backdrop"
-  cfg.backdrop_edge_texture = MediaPath.."backdrop_edge"
+  cfg.backdrop_texture = "Interface\\Buttons\\WHITE8x8"
+  cfg.backdrop_edge_texture = "Interface\\Buttons\\WHITE8x8"
   -- raid specific stuff
   cfg.aurafont = MediaPath.."auras.ttf"
   cfg.debuffborder = MediaPath.."iconborder"
@@ -30,17 +30,17 @@
   cfg.allow_frame_movement = false -- allow alt+shift dragging for player, target, focus and pet frames
   cfg.frames_locked = true 
   cfg.playerauras = false -- small aura frame for player
-  cfg.auratimers = false -- aura timers
-    cfg.ATIconSizeThreshold = 19 -- how big some icon should be to display the custom timer
+  cfg.auratimers = true -- aura timers
+    cfg.ATIconSizeThreshold = 6 -- how big some icon should be to display the custom timer
     cfg.ATSize = 12 -- aura timer font size
   cfg.showfaketarget = true -- fake target bars that spawn if you don't have anything targeted
   cfg.RMalpha = 0.6 -- raid mark alpha
   cfg.RMsize = 16 -- raid mark size
-  cfg.EnableCombatFeedback = true -- enables CombatFeedback on player and target unit frames
+  cfg.EnableCombatFeedback = false -- enables CombatFeedback on player and target unit frames
   
   -- Cast bars settings
   cfg.focusCBuserplaced = true -- false to lock focus cast bar to the focus frame
-    cfg.focusCBposition = {"CENTER",UIParent,"BOTTOM",10,410} -- focus cb position
+    cfg.focusCBposition = {"CENTER",UIParent,"BOTTOM",10,510} -- focus cb position
     cfg.focusCBwidth = 280 -- focus cb width
     cfg.focusCBheight = 15 -- focus cb height
   cfg.playerCBuserplaced = false -- false to lock player cast bar to the player frame
@@ -55,10 +55,10 @@
   cfg.interruptcb = {1, 0.49, 0} -- color setting for uninterruptable casts
 
   -- Frames position
-  cfg.Ppos = {"TOP","UIParent","BOTTOM", -235, 275} -- player
-  cfg.Tpos = {"TOP","UIParent","BOTTOM", 235, 275} -- target
+  cfg.Ppos = {"TOP","UIParent","BOTTOM", -235, 295} -- player
+  cfg.Tpos = {"TOP","UIParent","BOTTOM", 235, 295} -- target
   cfg.PEpos = {"TOPLEFT", "oUF_monoPlayerFrame", "BOTTOMLEFT", 0, -37} -- pet
-  cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -37} -- ToT
+  cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -42} -- ToT
   cfg.Fpos = {"TOPLEFT", "oUF_monoTargetFrame", "TOPRIGHT", 3, 0} -- focus
   cfg.PApos = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 95, 352} -- party
     cfg.PAspacing = 40 -- spacing between party units
@@ -90,9 +90,9 @@
   --raid config
   cfg.showraid = true 								-- enable raid frames
   cfg.DisableBlizzRaidManager = true 				-- disable default compact Raid Manager button
-  cfg.width = 59 									-- raid unit width
-  cfg.height = 27 									-- raid unit height
-  cfg.spacing = 4 									-- spacing between units
+  cfg.width = 65 									-- raid unit width
+  cfg.height = 24									-- raid unit height
+  cfg.spacing = 3 									-- spacing between units
   cfg.namelength = 4 								-- number of letters to display
   cfg.fontsize = 12 								-- font size
   cfg.iconsize = 10 								-- informative icon size (aka RL,ML,A etc.)
@@ -101,22 +101,22 @@
   cfg.debuffsize = 11 								-- debuff icon size
   cfg.focusHLcol = {.8, .8, .2, .7} 				-- focus border color
   cfg.orientation = "HORIZONTAL" 					-- hp/mp bar direction
-  cfg.pos = {"TOPLEFT", "UIParent", "BOTTOM", -156, 177} 				-- raid frame (group 1-5) position
+  cfg.pos = {"TOPLEFT", "UIParent", "BOTTOM", -164, 137} 	-- raid frame (group 1-5) position
   cfg.MTframes = true 													-- toggle MT frames
-    cfg.MTpos = {"BOTTOMLEFT", "UIParent", "BOTTOMRIGHT", -163, 233}	-- MTs frame position
+    cfg.MTpos = {"LEFT", "UIParent", "LEFT", 10, 20}	-- MTs frame position
     cfg.MTsize = 1.5 								-- MT size relatively to unit size
   cfg.frequent = true 								-- Enhances update rate for indicators (can be cpu intensive)
   cfg.indicators = true 							-- enable/disable raid frames indicators
   cfg.LeaderIcons = true 							-- toggle leader/assistant/master looter icons visibility on raid units
   cfg.RaidMark = true 								-- toggle raid mark visibility on raid units
   cfg.RCheckIcon = true 							-- ready check icon
-  cfg.raid40swap = true 							-- allow raid frames to change their size if there are more than 30 players in the group
-  cfg.raid5ON = false 								-- show raid frame for 5 (or less) men raid group
+  cfg.raid40swap = false 							-- allow raid frames to change their size if there are more than 30 players in the group
+  cfg.raid5ON = true								-- show raid frame for 5 (or less) men raid group
   cfg.partyON = false 								-- show party as 5 men raid group
-    cfg.lfdIcons = true 							-- toggle group role indication on/off
+    cfg.lfdIcons = false 							-- toggle group role indication on/off
   cfg.powerbar = true 								-- toggle display of tiny power bars on raid frames
     cfg.powerbarsize = 0.09 						-- power bar thickness relatively to unit size
-  cfg.healbar = true 								-- healing prediction bar
+  cfg.healbar = false 								-- healing prediction bar
 	cfg.healalpha = 0.25 							-- heal prediction bar alpha
 	cfg.healoverflow = 1 							-- overhealing display (1 = disabled, may take values higher than 1)
   cfg.healtext = false 								-- show/hide heal prediction text
