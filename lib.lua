@@ -851,5 +851,33 @@ end
 		f.CombatFeedbackText = cfbt
 	end
   end
+  -- alt power bar
+  lib.gen_alt_powerbar = function(f)
+	local apb = CreateFrame("StatusBar", nil, f)
+	apb:SetFrameLevel(f.Health:GetFrameLevel() + 2)
+	apb:SetSize(f.width/2.2, f.height/3)
+	apb:SetStatusBarTexture(cfg.statusbar_texture)
+	apb:GetStatusBarTexture():SetHorizTile(false)
+	apb:SetStatusBarColor(1, 0, 0)
+	apb:SetPoint("BOTTOM", f, "TOP", 0, -f.height/6)
+
+	apb.bg = apb:CreateTexture(nil, "BORDER")
+	apb.bg:SetAllPoints(apb)
+	apb.bg:SetTexture(cfg.statusbar_texture)
+	apb.bg:SetVertexColor(.18, .18, .18, 1)
+	f.AltPowerBar = apb
+	
+	apb.b = CreateFrame("Frame", nil, apb)
+	apb.b:SetFrameLevel(f.Health:GetFrameLevel() + 1)
+	apb.b:SetPoint("TOPLEFT", apb, "TOPLEFT", -4, 4)
+	apb.b:SetPoint("BOTTOMRIGHT", apb, "BOTTOMRIGHT", 4, -5)
+	apb.b:SetBackdrop(backdrop_tab)
+	apb.b:SetBackdropColor(0, 0, 0, 0)
+	apb.b:SetBackdropBorderColor(0,0,0,1)
+	
+	apb.v = lib.gen_fontstring(apb, cfg.font, 10, "THINOUTLINE")
+	apb.v:SetPoint("CENTER", apb, "CENTER", 0, 0)
+	f:Tag(apb.v, '[mono:altpower]')
+  end
   --hand the lib to the namespace for further usage
   ns.lib = lib

@@ -41,6 +41,7 @@
     lib.gen_specificpower(self)
     lib.gen_combat_feedback(self)
 	lib.gen_EclipseBar(self)
+	lib.gen_alt_powerbar(self)
     if cfg.playerauras then lib.createAuras(self) end
     if(isSingle) then self:SetSize(self.width,self.height) end
   end  
@@ -199,6 +200,7 @@
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
     lib.gen_castbar(self)
+	lib.gen_alt_powerbar(self)
 	if(isSingle) then self:SetSize(self.width,self.height) end
   end  
 
