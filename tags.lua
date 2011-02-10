@@ -342,3 +342,41 @@ oUF.Tags['mono:heal'] = function(u)
     end
 end
 oUF.TagEvents['mono:heal'] = 'UNIT_HEAL_PREDICTION'
+
+-- AltPower value tag
+oUF.Tags['mono:altpower'] = function(unit)
+	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
+	local max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
+	if(max > 0 and not UnitIsDeadOrGhost(unit)) then
+		return ("%s%%"):format(math.floor(cur/max*100+.5))
+	else
+		return ''
+	end
+end
+oUF.TagEvents['mono:altpower'] = 'UNIT_POWER'
+
+
+oUF.Tags['mono:exp'] = function(unit)
+	if UnitLevel("player") ~= MAX_PLAYER_LEVEL then
+		if GetXPExhaustion() then
+			return ("XP: %s/%s (%.1f%% R)"):format(SVal(UnitXP("player")), SVal(UnitXPMax("player")), (GetXPExhaustion() or 0) / UnitXPMax("player") * 100)
+		else
+			return ("XP: %s/%s"):format(SVal(UnitXP("player")), SVal(UnitXPMax("player")))
+		end
+	else 
+		return
+	end
+end
+oUF.TagEvents['mono:exp'] = "PLAYER_XP_UPDATE UPDATE_EXHAUSTION UNIT_LEVEL"
+
+
+oUF.Tags['mono:rep'] = function(unit)
+	local faction, lvl, min, max, val = GetWatchedFactionInfo()
+	if faction then
+		local color = oUF.colors.reaction[lvl] or cfg.colors.text
+		return ("|cFF%.2x%.2x%.2x%s: %s/%s|r"):format(color[1] * 255, color[2] * 255, color[3] * 255, faction, val - min, SVal(max - min))
+	else
+		return
+	end
+end
+oUF.TagEvents['mono:rep'] = "UNIT_LEVEL UPDATE_FACTION CHAT_MSG_COMBAT_FACTION_CHANGE"
