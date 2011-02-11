@@ -777,11 +777,12 @@ end
     t:SetAlpha(0.8)
     t.trinketUseAnnounce = true
     t.bg = CreateFrame("Frame", nil, t)
-    t.bg:SetPoint("TOPLEFT",-4,4)
-    t.bg:SetPoint("BOTTOMRIGHT",4,-4)
+	--t.bg:SetFrameLevel(1)
+    t.bg:SetPoint("TOPLEFT",-scale(2),scale(2))
+    t.bg:SetPoint("BOTTOMRIGHT",scale(2),-scale(2))
     t.bg:SetBackdrop(backdrop_tab);
-    t.bg:SetBackdropColor(0,0,0,0)
-    t.bg:SetBackdropBorderColor(0,0,0,1)
+    --t.bg:SetBackdropColor(.1,.1,.1,1)
+    t.bg:SetBackdropBorderColor(.3,.3,.3,1)
 	t.remaining = lib.gen_fontstring(t, cfg.font, cfg.ATSize-2, "THINOUTLINE")
 	t.remaining:SetPoint('BOTTOM', t, 0, 0)
     t:SetScript("OnUpdate", lib.CreateAuraTimer)
