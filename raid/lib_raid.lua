@@ -119,15 +119,15 @@
   
   local PostUpdateHealth = function(s, unit)
     local r, g, b, t
-    if(UnitIsPlayer(unit)) then
+    --[[if(UnitIsPlayer(unit)) then
       local _, class = UnitClass(unit)
       t = oUF.colors.class[class]
-    else
-      r, g, b = .2, .9, .1
-    end
-    if(t) then
+    else]]
+      r, g, b = .5, .5, .5
+    --end
+    --[[if(t) then
       r, g, b = t[1], t[2], t[3]
-    end
+    end]]--
     if(b) then
       local bg = s.bg
       if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
@@ -135,7 +135,7 @@
       else
         bg:SetVertexColor(r, g, b, 1)
       end
-      s:SetStatusBarColor(0, 0, 0, .8)
+      s:SetStatusBarColor(0, 0, 0, .7)
     end
   end  
   
