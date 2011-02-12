@@ -420,12 +420,12 @@
       else
         icon.remaining:Hide()
       end
-    if unit == 'player' or unit == 'target' then
+    --if unit == 'player' or unit == 'target' then
       icon.duration = duration
       icon.timeLeft = expirationTime
       icon.first = true
       icon:SetScript("OnUpdate", lib.CreateAuraTimer)
-    end
+    --end
   end
   -- creating aura icons
   lib.PostCreateIcon = function(self, button)
