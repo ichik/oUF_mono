@@ -1,5 +1,5 @@
 ## Interface: 40000
-## Version: 4.1.6
+## Version: 4.1.7
 ## Title: oUF |cffffffffmono|r
 ## Notes: oUF layout
 ## RequiredDeps: oUF

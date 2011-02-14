@@ -36,7 +36,7 @@
   cfg.showfaketarget = true -- fake target bars that spawn if you don't have anything targeted
   cfg.RMalpha = 0.6 -- raid mark alpha
   cfg.RMsize = 16 -- raid mark size
-  cfg.EnableCombatFeedback = true -- enables CombatFeedback on player and target unit frames
+  cfg.EnableCombatFeedback = false -- enables CombatFeedback on player and target unit frames
   
   -- Cast bars settings
   cfg.focusCBuserplaced = true -- false to lock focus cast bar to the focus frame

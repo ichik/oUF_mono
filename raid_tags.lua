@@ -72,7 +72,7 @@ oUF.Tags['raid:ws'] = function(u) if UnitDebuff(u, L["Weakened Soul"]) then retu
 oUF.TagEvents['raid:ws'] = "UNIT_AURA"
 oUF.Tags['raid:fw'] = function(u) if UnitAura(u, L["Fear Ward"]) then return "|cff8B4513"..x.."|r" end end
 oUF.TagEvents['raid:fw'] = "UNIT_AURA"
-oUF.Tags['raid:sp'] = function(u) local c = UnitAura(u, "Shadow Protection") if not c then return "|cff9900FF"..x.."|r" end end
+oUF.Tags['raid:sp'] = function(u) local c = UnitAura(u, L["Shadow Protection"]) if not c then return "|cff9900FF"..x.."|r" end end
 oUF.TagEvents['raid:sp'] = "UNIT_AURA"
 oUF.Tags['raid:fort'] = function(u) local c = UnitAura(u, L["Power Word: Fortitude"]) if not c then return "|cff00A1DE"..x.."|r" end end
 oUF.TagEvents['raid:fort'] = "UNIT_AURA"
