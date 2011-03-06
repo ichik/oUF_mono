@@ -500,14 +500,9 @@
       b.num = 4
       b:SetWidth((b.size+b.spacing)*4)
     elseif f.mystyle=='party' then
-<<<<<<< HEAD
       b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", scale(2), -b.spacing)
       b.num = 8
       b.spacing = scale(8)
-=======
-      b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -b.spacing)
-      b.num = 9
-      b.spacing = 4
 	elseif f.mystyle=="player" and cfg.playerauras=="BUFFS" then
       if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
         -- making space for rune or totem bar
@@ -523,7 +518,6 @@
 	  b.spacing = 6.1
       b:SetHeight((b.size+b.spacing)*2)
       b:SetWidth((b.size+b.spacing)*9)
->>>>>>> original
     end
     b.PostCreateIcon = lib.PostCreateIcon
     b.PostUpdateIcon = lib.PostUpdateIcon
