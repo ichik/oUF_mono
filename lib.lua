@@ -16,6 +16,11 @@
   -----------------------------
   -- FUNCTIONS
   -----------------------------
+  -- my config 
+  if GetUnitName("player") == "Strigoy" then
+	cfg.playerauras = "DEBUFFS"
+  end
+  
   --fontstring func
   lib.gen_fontstring = function(f, name, size, outline)
     local fs = f:CreateFontString(nil, "OVERLAY")
@@ -61,22 +66,6 @@
     end
   end
   
-  --moveme func
-  lib.moveme = function(f)
-    if cfg.allow_frame_movement then
-      f:SetMovable(true)
-      f:SetUserPlaced(true)
-      if not cfg.frames_locked then
-        f:EnableMouse(true)
-        f:RegisterForDrag("LeftButton","RightButton")
-        f:SetScript("OnDragStart", function(self) if IsAltKeyDown() and IsShiftKeyDown() then self:StartMoving() end end)
-        f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-      end
-    else
-      f:IsUserPlaced(false)
-    end  
-  end 
-  
   --init func
   lib.init = function(f)
     f.menu = lib.menu
@@ -85,7 +74,6 @@
     f:SetAttribute("*type2", "menu")
     f:SetScript("OnEnter", UnitFrame_OnEnter)
     f:SetScript("OnLeave", UnitFrame_OnLeave)
-
   end
 
 ------ [Building frames]
@@ -265,7 +253,6 @@
     h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",scale(2),-scale(2))
     lib.gen_backdrop(h2)
     if f.mystyle == "focus" and cfg.focusCBuserplaced then
-      lib.moveme(s)
       s:SetPoint(unpack(cfg.focusCBposition))
       s:SetSize(cfg.focusCBwidth,cfg.focusCBheight)
       i:SetSize(s:GetHeight()-2,s:GetHeight()-2)
@@ -471,8 +458,8 @@
     a.size = scale(22)
     a.showDebuffType = true
 	--a.onlyShowPlayer = true
-    if f.mystyle=="target" or (f.mystyle=="player" and cfg.playerauras) then
-      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_TotemBar"))) then 
+    if f.mystyle=="target" or (f.mystyle=="player" and cfg.playerauras=="AURAS") then
+      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
         -- making space for rune or totem bar
         a:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
       end
@@ -513,9 +500,30 @@
       b.num = 4
       b:SetWidth((b.size+b.spacing)*4)
     elseif f.mystyle=='party' then
+<<<<<<< HEAD
       b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", scale(2), -b.spacing)
       b.num = 8
       b.spacing = scale(8)
+=======
+      b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -b.spacing)
+      b.num = 9
+      b.spacing = 4
+	elseif f.mystyle=="player" and cfg.playerauras=="BUFFS" then
+      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
+        -- making space for rune or totem bar
+        b:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
+	  else
+		b:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1.5, 4)
+      end
+	  b['growth-x'] = 'RIGHT'
+      b['growth-y'] = 'UP' 
+      b.initialAnchor = 'BOTTOMLEFT'
+	  b.num = 18
+	  b.size = 20
+	  b.spacing = 6.1
+      b:SetHeight((b.size+b.spacing)*2)
+      b:SetWidth((b.size+b.spacing)*9)
+>>>>>>> original
     end
     b.PostCreateIcon = lib.PostCreateIcon
     b.PostUpdateIcon = lib.PostUpdateIcon
@@ -549,6 +557,20 @@
       d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -scale(2))
       d["growth-x"] = "LEFT"
       d:SetWidth((d.size+d.spacing)*4)
+	elseif f.mystyle=="player" and cfg.playerauras=="DEBUFFS" then
+      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
+        d:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
+	  else
+		d:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1.5, 4)
+      end
+	  d['growth-x'] = 'RIGHT'
+      d['growth-y'] = 'UP' 
+      d.initialAnchor = 'BOTTOMLEFT'
+	  d.num = 18
+	  d.size = 20
+	  d.spacing = 6.1
+      d:SetHeight((b.size+d.spacing)*2)
+      d:SetWidth((b.size+d.spacing)*9)
     end
     d.PostCreateIcon = lib.PostCreateIcon
     d.PostUpdateIcon = lib.PostUpdateIcon
@@ -688,7 +710,11 @@ end
     h:SetFrameLevel(10)
     local sp = lib.gen_fontstring(h, cfg.font, 30, "THINOUTLINE")
     sp:SetPoint("CENTER", f.Health, "CENTER",0,3)
-    f:Tag(sp, '[mono:sp][mono:orbs][mono:ws][mono:ls]')
+	if class == "DRUID" then
+		f:Tag(sp, '[mono:wm1][mono:wm2][mono:wm3]')
+	else
+		f:Tag(sp, '[mono:sp][mono:orbs][mono:ws][mono:ls]')
+	end
   end
   --gen combo points
   lib.gen_cp = function(f)

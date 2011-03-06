@@ -24,7 +24,6 @@
     self.width = cfg.Pwidth
     self.height = cfg.Pheight
     self.mystyle = "player"
-    lib.moveme(self)
     genStyle(self)
     self.Health.Smooth = true
     self.Power.frequentUpdates = true
@@ -42,7 +41,9 @@
     lib.gen_combat_feedback(self)
 	lib.gen_EclipseBar(self)
 	lib.gen_alt_powerbar(self)
-    if cfg.playerauras then lib.createAuras(self) end
+    lib.createAuras(self)
+	lib.createBuffs(self)
+    lib.createDebuffs(self)
     if(isSingle) then self:SetSize(self.width,self.height) end
   end  
   
@@ -51,7 +52,6 @@
     self.width = cfg.Twidth
     self.height = cfg.Theight
     self.mystyle = "target"
-    lib.moveme(self)
     genStyle(self)
     self.Health.Smooth = true
     self.Power.frequentUpdates = true
@@ -73,7 +73,6 @@
     self.width = cfg.PTTwidth
     self.height = cfg.PTTheight
     self.mystyle = "tot"
-    lib.moveme(self)
     genStyle(self)
     self.Health.colorClass = false
     self.Power.colorPower = true
@@ -88,7 +87,6 @@
     self.width = cfg.PTTwidth
     self.height = cfg.PTTheight
     self.mystyle = "pet"
-    lib.moveme(self)
     self.disallowVehicleSwap = true
     genStyle(self)
     self.Power.frequentUpdates = true
@@ -105,7 +103,6 @@
     self.width = cfg.Fwidth
     self.height = cfg.Fheight
     self.mystyle = "focus"
-    lib.moveme(self)
     genStyle(self)
     self.Power.frequentUpdates = true
     self.Power.colorPower = true
@@ -120,7 +117,7 @@
     self.width = cfg.Fwidth
     self.height = cfg.Fheight/1.7
     self.mystyle = "focus"
-    lib.moveme(self)
+    
     genStyle(self)
 	self.Power:Hide()
 	if(isSingle) then self:SetSize(self.width,self.height) end

@@ -6,6 +6,8 @@
   -----------------------------
   -- local variables
   -----------------------------
+  if not cfg.RAIDpos then cfg.RAIDpos = cfg.pos end -- compatability with old config files
+  
   local _, class = UnitClass("player")
   local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/GetCVar("uiScale")
   local function scale(x) return mult*math.floor(x+.5) end
@@ -391,7 +393,7 @@
 		rbg = CreateFrame("frame","RaidBG",UIParent) 
 		rbg:SetWidth(cfg.width*5+cfg.spacing*3+16)
 		rbg:SetHeight(cfg.height*5+cfg.spacing*3+15)
-		rbg:SetPoint(cfg.pos[1],cfg.pos[2],cfg.pos[3],cfg.pos[4]-6,cfg.pos[5]+6)
+		rbg:SetPoint(cfg.RAIDpos[1],cfg.RAIDpos[2],cfg.RAIDpos[3],cfg.RAIDpos[4]-6,cfg.RAIDpos[5]+6)
 		rbg:SetBackdrop({edgeFile = "interface\\Tooltips\\UI-Tooltip-Border",edgeSize = 5})
 		rbg.bg = rbg:CreateTexture(nil, "PARENT")
 		rbg.bg:SetTexture("interface\\Tooltips\\UI-Tooltip-Background")

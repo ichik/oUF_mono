@@ -8,6 +8,7 @@
   -----------------------------
   -- STYLE FUNCTIONS
   -----------------------------
+  if not cfg.RAIDpos then cfg.RAIDpos = cfg.pos end -- compatability with old config files
   
   local function genStyle(self)
     lib.init(self)
@@ -90,7 +91,7 @@ if cfg.showraid then
       -- 'point', "LEFT",
       -- 'groupFilter', i)
     -- if i == 1 then
-      -- group:SetPoint(cfg.pos[1], cfg.pos[2], cfg.pos[3], cfg.pos[4], cfg.pos[5])
+      -- group:SetPoint(cfg.RAIDpos[1], cfg.RAIDpos[2], cfg.RAIDpos[3], cfg.RAIDpos[4], cfg.RAIDpos[5])
     -- else
       -- group:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -cfg.spacing)
     -- end
@@ -117,7 +118,7 @@ if cfg.showraid then
 	self:SetWidth(%d)
 	self:SetHeight(%d)
 	]]):format(cfg.width, cfg.height))
-	raid:SetPoint(cfg.pos[1], cfg.pos[2], cfg.pos[3], cfg.pos[4], cfg.pos[5])	
+	raid:SetPoint(unpack(cfg.RAIDpos))	
 
 	if cfg.raid40swap then
 		oUF:RegisterStyle("oUF_monoRaidB", Raid40Style)
@@ -142,7 +143,7 @@ if cfg.showraid then
 		self:SetWidth(%d)
 		self:SetHeight(%d)
 		]]):format(uw8, cfg.height))
-		raid40:SetPoint(cfg.pos[1], cfg.pos[2], cfg.pos[3], cfg.pos[4]+2, cfg.pos[5])
+		raid40:SetPoint(cfg.RAIDpos[1], cfg.RAIDpos[2], cfg.RAIDpos[3], cfg.RAIDpos[4]+2, cfg.RAIDpos[5])
 	end
   
   -- spawn MT targets
