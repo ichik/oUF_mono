@@ -311,15 +311,34 @@ oUF.TagEvents['mono:ws'] = 'UNIT_AURA'
 -- lightning shield
 oUF.Tags['mono:ls'] = function(u)
 	local name, _, _, count, _, duration = UnitBuff("player",GetSpellInfo(324)) 
-	if count == 7 then
-		return "|cffFFF130_|r"
+	if count == 1 then
+		return "|cff434343_|r"
+	elseif count == 2 then
+		return "|cff434343_ _|r"
+	elseif count == 7 then
+		return "|cffFFF130_|r |cff434343_ _|r"
 	elseif count == 8 then
-		return "|cffFF6161_ _|r"
+		return "|cffFF6161_ _|r |cff434343_|r"
 	elseif count == 9 then
 		return "|cffFF6161_ _ _|r"
+	elseif count then
+		return "|cff434343_ _ _|r"
 	end
 end
 oUF.TagEvents['mono:ls'] = 'UNIT_AURA'
+
+-- shrooooooooooooms (Wild Mushroom)
+if select(2, UnitClass("player")) == "DRUID" then
+	for i=1,3 do
+		oUF.Tags['mono:wm'..i] = function(u)
+			_,_,_,dur = GetTotemInfo(i)
+			if dur > 0 then
+				return "|cffFF6161_ |r"
+			end
+		end
+		oUF.TagEvents['mono:wm'..i] = 'PLAYER_TOTEM_UPDATE'
+	end
+end
 
 -- LFD role tag
 oUF.Tags['mono:LFD'] = function(u)
