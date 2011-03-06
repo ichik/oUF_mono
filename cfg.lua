@@ -30,8 +30,8 @@
   
   -- Elements
   cfg.playerauras = "NONE" 			-- small aura frame for player, available options: "BUFFS", "DEBUFFS", "AURAS", "NONE"
-  cfg.auratimers = false 			-- aura timers
-    cfg.ATIconSizeThreshold = 19 	-- how big some icon should be to display the custom timer
+  cfg.auratimers = true 			-- aura timers
+    cfg.ATIconSizeThreshold = 10 	-- how big some icon should be to display the custom timer
     cfg.ATSize = 12 				-- aura timer font size
   cfg.showfaketarget = true 		-- fake target bars that spawn if you don't have anything targeted
   cfg.RMalpha = 0.6 				-- raid mark alpha
