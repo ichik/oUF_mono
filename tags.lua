@@ -337,6 +337,7 @@ if select(2, UnitClass("player")) == "DRUID" then
 			end
 		end
 		oUF.TagEvents['mono:wm'..i] = 'PLAYER_TOTEM_UPDATE'
+		oUF.UnitlessTagEvents.PLAYER_TOTEM_UPDATE = true
 	end
 end
 
