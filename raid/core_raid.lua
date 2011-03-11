@@ -17,7 +17,7 @@
     lib.gen_highlight(self)
     lib_raid.gen_elements(self)
     lib_raid.upd_elements(self)
-    self.Range = {insideAlpha = 1,outsideAlpha = 0.6}
+    self.Range = {insideAlpha = 1,outsideAlpha = 0.5}
   end 
 
   local function RaidStyle(self)
