@@ -64,14 +64,14 @@ if cfg.showraid then
   oUF:SetActiveStyle"oUF_monoRaid"
 
   local visible -- my ASS
-  if cfg.raid5ON and cfg.raid40swap then
-	visible = 'custom [group:party]show;[@raid36,exists] hide;show'
-  elseif cfg.raid5ON and not cfg.raid40swap then
-	visible = 'raid,party'
-  elseif not cfg.raid5ON and cfg.raid40swap then
-	visible = 'custom [group:party]show;[@raid36,exists]hide;[@raid6,exists]show;hide'
+  if cfg.raid40swap and cfg.raid5ON then
+	visible = 'custom [@raid36,exists] hide;[group:party]show;show'
+  elseif cfg.raid40swap and not cfg.raid5ON then
+	visible = 'custom [@raid36,exists]hide;[@raid6,exists]show;[group:party]show;hide'
 	if not cfg.partyON then visible = 'custom [@raid36,exists]hide;[@raid6,exists]show;hide' end
-  else
+  elseif not cfg.raid40swap and cfg.raid5ON then
+	visible = 'raid,party'
+  elseif not cfg.raid40swap and not cfg.raid5ON then
 	visible = 'custom [group:party]show;[@raid6,exists,group:raid]show;hide'
 	if not cfg.partyON then visible = 'custom [@raid6,exists,group:raid]show;hide' end
   end
