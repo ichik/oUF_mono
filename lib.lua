@@ -141,7 +141,7 @@
     local s = CreateFrame("StatusBar", nil, f)
     s:SetStatusBarTexture(cfg.statusbar_texture)
     fixStatusbar(s)
-    s:SetHeight(f.height/2.5)
+    s:SetHeight(f.height/3)
     s:SetWidth(f.width-1)
     s:SetPoint("TOP",f,"BOTTOM",0,-2)
     if f.mystyle == "partypet" or f.mystyle == "arenatarget" then
@@ -182,6 +182,13 @@
         pp:SetPoint("RIGHT", f.Power, "RIGHT",-5,0)
         info:SetJustifyH("LEFT")
     end
+	--resting indicator for player frame
+	if f.mystyle == "player" then
+		local ri = lib.gen_fontstring(f.Power, cfg.font, 11, "THINOUTLINE")
+		ri:SetPoint("LEFT", info, "RIGHT",2,0)
+		ri:SetText("|cff8AFF30Zzz|r")
+		f.Resting = ri
+	end
 	pp.frequentUpdates = 0.2 -- test it!!1
     if class == "DRUID" then
       f:Tag(pp, '[mono:druidpower] [mono:pp]')
@@ -288,7 +295,7 @@
       s.SafeZone = z
       --custom latency display
       local l = lib.gen_fontstring(s, cfg.font, 10, "THINOUTLINE")
-      l:SetPoint("CENTER", -2, 17)
+      l:SetPoint("CENTER", -2, 16)
       l:SetJustifyH("RIGHT")
       s.Lag = l
       f:RegisterEvent("UNIT_SPELLCAST_SENT", cast.OnCastSent)
@@ -733,11 +740,6 @@ end
 		f.Combat = h:CreateTexture(nil, 'OVERLAY')
 		f.Combat:SetSize(20,20)
 		f.Combat:SetPoint('TOPRIGHT', 3, 9)
-	--resting indicator
-		local ri = lib.gen_fontstring(f.Power, cfg.font, 11, "THINOUTLINE")
-		ri:SetPoint("LEFT", f.Power, "LEFT",21,0)
-		ri:SetText("|cff8AFF30[Zzz]|r")
-		f.Resting = ri
     end
     --Leader icon
     li = h:CreateTexture(nil, "OVERLAY")
@@ -831,11 +833,11 @@ end
     h:SetPoint("TOPLEFT",-3.5,3.5)
     h:SetPoint("BOTTOMRIGHT",3.5,-3.5)
     h:SetBackdropColor(0,0,0,0)
-    h:SetBackdropBorderColor(0,0,0,0.5)
+    h:SetBackdropBorderColor(0,0,0,.7)
 
     local fpp = CreateFrame("frame","FakeManaBar",fhp)
     fpp:SetWidth(fhp:GetWidth())
-    fpp:SetHeight(f.height/2.5)
+    fpp:SetHeight(f.height/3)
     fpp:SetPoint("TOPLEFT",FakeHealthBar,"BOTTOMLEFT",0,-2)
     fpp.bg = fpp:CreateTexture(nil, "PARENT")
     fpp.bg:SetTexture(cfg.statusbar_texture)
@@ -844,10 +846,10 @@ end
     fpp.bg:SetVertexColor(.30,.45,.65)
     local h2 = CreateFrame("Frame",nil,fpp)
     h2:SetBackdrop(backdrop_tab)
-    h2:SetPoint("TOPLEFT",-3.5,3.5)
-    h2:SetPoint("BOTTOMRIGHT",3.5,-3.5)
+    h2:SetPoint("TOPLEFT",-3.5,5)
+    h2:SetPoint("BOTTOMRIGHT",3.5,-5)
     h2:SetBackdropColor(0,0,0,0)
-    h2:SetBackdropBorderColor(0,0,0,0.5)
+    h2:SetBackdropBorderColor(0,0,0,1)
 
     fhp:RegisterEvent('PLAYER_TARGET_CHANGED')
     fhp:SetScript('OnEvent', function(self)

@@ -45,6 +45,7 @@ raid_debuffs = {
             [GetSpellInfo(80011)] = 7, -- Soaked in Poison
             [GetSpellInfo(80094)] = 7, -- Fixate
             --Maloriak
+			[GetSpellInfo(92754)] = 8, -- Engulfing Darkness
             [GetSpellInfo(92973)] = 8, -- Consuming Flames
             [GetSpellInfo(92978)] = 8, -- Flash Freeze
             --[GetSpellInfo(92976)] = 7, -- Biting Chill

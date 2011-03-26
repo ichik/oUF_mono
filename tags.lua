@@ -75,7 +75,7 @@ oUF.Tags['mono:color'] = function(u, r)
 	
 	if (UnitIsTapped(u) and not UnitIsTappedByPlayer(u)) then
 		return hex(oUF.colors.tapped)
-	elseif (u == "pet") and GetPetHappiness() then
+	elseif (u == "pet") and GetPetHappiness() then -- remove in 4.1
 		return hex(oUF.colors.happiness[GetPetHappiness()])
 	elseif (UnitIsPlayer(u)) then
 		return hex(oUF.colors.class[class])
@@ -134,7 +134,7 @@ oUF.Tags['mono:hp']  = function(u) -- THIS IS FUCKING MADNESS!!!
     local min, max = UnitHealth(u), UnitHealthMax(u)
     if u == "player" then
       if min~=max then 
-        return max.." | |cffe15f8b"..-def.."|r"
+        return SVal(min).." | |cffe15f8b"..-def.."|r"
       else
         return SVal(min).." | "..per 
       end
@@ -142,9 +142,9 @@ oUF.Tags['mono:hp']  = function(u) -- THIS IS FUCKING MADNESS!!!
       if min~=max then 
         if UnitIsPlayer("target") then
           if UnitIsEnemy("player","target") then
-            return min.." | "..max 
+            return per.." | "..min
           else
-            if def then return "|cffe15f8b"..-def.."|r | "..max end
+            if def then return "|cffe15f8b"..-def.."|r | "..SVal(min) end
           end
         else
           return per.." | "..SVal(min)
@@ -157,7 +157,7 @@ oUF.Tags['mono:hp']  = function(u) -- THIS IS FUCKING MADNESS!!!
     else
       if UnitIsPlayer(u) and not UnitIsEnemy("player",u) then
         if min~=max then 
-          return SVal(max).." | |cffe15f8b"..-def.."|r"
+          return SVal(min).." | |cffe15f8b"..-def.."|r"
         else
           return SVal(min).." | "..per 
         end
@@ -369,13 +369,13 @@ oUF.Tags['mono:altpower'] = function(unit)
 	local max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
 	if(max > 0 and not UnitIsDeadOrGhost(unit)) then
 		return ("%s%%"):format(math.floor(cur/max*100+.5))
-	else
-		return ''
+--	else
+--		return ''
 	end
 end
 oUF.TagEvents['mono:altpower'] = 'UNIT_POWER'
 
-
+--[[ 
 oUF.Tags['mono:exp'] = function(unit)
 	if UnitLevel("player") ~= MAX_PLAYER_LEVEL then
 		if GetXPExhaustion() then
@@ -399,4 +399,4 @@ oUF.Tags['mono:rep'] = function(unit)
 		return
 	end
 end
-oUF.TagEvents['mono:rep'] = "UNIT_LEVEL UPDATE_FACTION CHAT_MSG_COMBAT_FACTION_CHANGE"
+oUF.TagEvents['mono:rep'] = "UNIT_LEVEL UPDATE_FACTION CHAT_MSG_COMBAT_FACTION_CHANGE" ]]

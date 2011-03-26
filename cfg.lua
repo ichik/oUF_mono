@@ -55,8 +55,8 @@
   cfg.interruptcb = {1, 0.49, 0}	-- color setting for uninterruptable casts
 
   -- Frames position
-  cfg.Ppos = {"TOP","UIParent","BOTTOM", -235, 277} 						-- Player
-  cfg.Tpos = {"TOP","UIParent","BOTTOM", 235, 277} 							-- Target
+  cfg.Ppos = {"TOP","UIParent","BOTTOM", -235, 275} 						-- Player
+  cfg.Tpos = {"TOP","UIParent","BOTTOM", 235, 275} 							-- Target
   cfg.PEpos = {"TOPLEFT", "oUF_monoPlayerFrame", "BOTTOMLEFT", 0, -37}		-- Pet
   cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -37}	-- ToT
   cfg.Fpos = {"TOPLEFT", "oUF_monoTargetFrame", "TOPRIGHT", 3, 0}			-- Focus
@@ -69,11 +69,11 @@
   
   -- Size and scale
   cfg.Pwidth = 232 		-- Player frame
-  cfg.Pheight = 25
+  cfg.Pheight = 24
   cfg.Pscale = 1
   
   cfg.Twidth = 232 		-- Target frame
-  cfg.Theight = 25
+  cfg.Theight = 24
   cfg.Tscale = 1
   
   cfg.PTTwidth = 133 	-- Pet and ToT frames
