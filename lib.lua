@@ -144,7 +144,7 @@
     s:SetStatusBarTexture(cfg.statusbar_texture)
     fixStatusbar(s)
     s:SetHeight(f.height/3)
-    s:SetWidth(f.width-1)
+    s:SetWidth(f.width)
     s:SetPoint("TOP",f,"BOTTOM",0,-2)
     if f.mystyle == "partypet" or f.mystyle == "arenatarget" then
       s:Hide()
