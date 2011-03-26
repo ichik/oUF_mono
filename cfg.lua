@@ -70,11 +70,11 @@
   
   -- Size and scale
   cfg.Pwidth = 232 		-- Player frame
-  cfg.Pheight = 25
+  cfg.Pheight = 24
   cfg.Pscale = 1
   
   cfg.Twidth = 232 		-- Target frame
-  cfg.Theight = 25
+  cfg.Theight = 24
   cfg.Tscale = 1
   
   cfg.PTTwidth = 133 	-- Pet and ToT frames
