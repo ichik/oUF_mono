@@ -23,6 +23,7 @@ local Enable = function(self)
 	self.AuraStatusBL:ClearAllPoints()
 	self.AuraStatusBL:SetPoint("BOTTOM")
 	self.AuraStatusBL:SetFont(cfg.aurafont, cfg.indicatorsize, "THINOUTLINE")
+	self.AuraStatusBL.frequentUpdates = cfg.frequent
 	self:Tag(self.AuraStatusBL, oUF.classIndicators[class]["BL"])	
 
 	self.AuraStatusBR = self.Health:CreateFontString(nil, "OVERLAY")
