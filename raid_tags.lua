@@ -38,10 +38,50 @@ local getTime = function(expirationTime)
 	end
 end
 
+local function CalcDebuff(uid, debuff) -- to fill some information gaps of UnitDebuff()
+	local name, icon, count, dur, expirationTime, caster, sdur, timeleft, start, dname
+	if type(debuff) == "number" then
+		dname = GetSpellInfo(debuff);
+		if not dname then dname = debuff; end
+	else
+		dname = debuff;
+	end
+	name, _, icon, count, _, dur, expirationTime, caster = UnitDebuff(uid, dname);
+	if (name == dname) then
+		if dur and dur > 0 then
+			sdur = dur;
+			start = expirationTime - dur;
+			timeleft = GetTime() - start;
+		else
+			sdur = 0;
+			ftimeleft = 0;
+			start = 0;
+		end
+	end
+	return name, count, icon, start, sdur, caster, timeleft;
+end
+
+-----------------[[ GENERAL TAGS ]]-----------------
+oUF.Tags['raid:wrack'] = function(u) -- Sinestra's specific debuff
+	local name,_,_,_,dur,_,remaining = CalcDebuff(u, GetSpellInfo(92956)) -- 57724 debug
+	if not name then return end
+	if remaining > 14 then -- FOAD
+		return "|cffFF0000"..x.."|r"
+	elseif remaining > 10 then -- criticall! dispel now!
+		return "|cffFFCC00"..x.."|r"
+	elseif remaining > 8 then -- start thinking about dispel!
+		return "|cff00FF00"..x.."|r"
+	else
+		return "|cffB1C4B9"..x.."|r"
+	end
+end
+oUF.TagEvents['raid:wrack'] = "UNIT_AURA"
+
 oUF.Tags['raid:aggro'] = function(u) 
 	local s = UnitThreatSituation(u) if s == 2 or s == 3 then return "|cffFF0000"..x.."|r" end end
 oUF.TagEvents['raid:aggro'] = "UNIT_THREAT_SITUATION_UPDATE"
 
+-----------------[[ CLASS SPECIFIC TAGS ]]-----------------
 --priest
 oUF.pomCount = {1,2,3,4,5,6}
 oUF.Tags['raid:pom'] = function(u) local c = select(4, UnitAura(u, L["Prayer of Mending"])) if c then return "|cffFFCF7F"..oUF.pomCount[c].."|r" end end
@@ -148,12 +188,12 @@ oUF.Tags['raid:beacon'] = function(u)
     if(fromwho == "player") then
         local spellTimer = GetTime()-expirationTime
         if spellTimer > -30 then
-            return "|cffFF00004|r"
+            return "|cffFF0000"..x.."|r"
         else
-            return "|cffFFCC003|r"
+            return "|cffFFCC00"..x.."|r"
         end
     else
-        return "|cff996600Y|r" -- other pally's beacon
+        return "|cff996600"..x.."|r" -- other pally's beacon
     end
 end
 oUF.TagEvents['raid:beacon'] = "UNIT_AURA"
@@ -170,7 +210,6 @@ oUF.Tags['raid:ripTime'] = function(u)
 	if (fromwho == "player") then return getTime(expirationTime) end 
 end
 oUF.TagEvents['raid:ripTime'] = 'UNIT_AURA'
-
 oUF.earthCount = {1,2,3,4,5,6,7,8,9}
 oUF.Tags['raid:earth'] = function(u) local c = select(4, UnitAura(u, L['Earth Shield'])) if c then return '|cffFFCF7F'..oUF.earthCount[c]..'|r' end end
 oUF.TagEvents['raid:earth'] = 'UNIT_AURA'
@@ -183,21 +222,21 @@ oUF.classIndicators={
 		["DRUID"] = {
 				["TL"] = "[raid:regrow][raid:wg]",
 				["TR"] = "[raid:lb]",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "[raid:motw]",
 				["Cen"] = "[raid:rejuvTime]",
 		},
 		["PRIEST"] = {
 				["TL"] = "[raid:pws][raid:ws]",
 				["TR"] = "[raid:pom]",
-				["BL"] = "[raid:fw]",
+				["BL"] = "[raid:fw][raid:wrack]",
 				["BR"] = "[raid:sp][raid:fort]",
 				["Cen"] = "[raid:rnwTime]",
 		},
 		["PALADIN"] = {
 				["TL"] = "[raid:HoS][raid:HoF][raid:HoP]",
 				["TR"] = "[raid:beacon]",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "[raid:might][raid:motw]",
 				["Cen"] = "",
 				
@@ -205,49 +244,49 @@ oUF.classIndicators={
 		["WARLOCK"] = {
 				["TL"] = "",
 				["TR"] = "",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "",
 				["Cen"] = "",
 		},
 		["WARRIOR"] = {
 				["TL"] = "[raid:vigil]",
 				["TR"] = "",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "",
 				["Cen"] = "",
 		},
 		["DEATHKNIGHT"] = {
 				["TL"] = "[raid:abomight]",
 				["TR"] = "",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "[raid:how]",
 				["Cen"] = "",
 		},
 		["SHAMAN"] = {
 				["TL"] = "",
 				["TR"] = "[raid:earth]",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "",
 				["Cen"] = "[raid:ripTime]",
 		},
 		["HUNTER"] = {
 				["TL"] = "",
 				["TR"] = "",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "",
 				["Cen"] = "",
 		},
 		["ROGUE"] = {
 				["TL"] = "",
 				["TR"] = "",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "",
 				["Cen"] = "",
 		},
 		["MAGE"] = {
 				["TL"] = "",
 				["TR"] = "",
-				["BL"] = "",
+				["BL"] = "[raid:wrack]",
 				["BR"] = "",
 				["Cen"] = "",
 		}

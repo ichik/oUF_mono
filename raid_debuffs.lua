@@ -44,12 +44,14 @@ raid_debuffs = {
             [GetSpellInfo(79501)] = 8, -- Acquiring Target
             [GetSpellInfo(80011)] = 7, -- Soaked in Poison
             [GetSpellInfo(80094)] = 7, -- Fixate
+			[GetSpellInfo(92048)] = 9, -- Shadow Infusion
+            [GetSpellInfo(92053)] = 9, -- Shadow Conductor
             --Maloriak
-			[GetSpellInfo(92754)] = 8, -- Engulfing Darkness
             [GetSpellInfo(92973)] = 8, -- Consuming Flames
             [GetSpellInfo(92978)] = 8, -- Flash Freeze
             --[GetSpellInfo(92976)] = 7, -- Biting Chill
             [GetSpellInfo(91829)] = 7, -- Fixate
+			[GetSpellInfo(92754)] = 8, -- Engulfing Darkness
             --Atramedes
             [GetSpellInfo(78092)] = 7, -- Tracking
             [GetSpellInfo(78897)] = 8, -- Noisy
@@ -61,6 +63,8 @@ raid_debuffs = {
             --Nefarian
             [GetSpellInfo(94128)] = 7, -- Tail Lash
             [GetSpellInfo(94075)] = 8, -- Magma
+			[GetSpellInfo(79339)] = 9, -- Explosive Cinders
+            [GetSpellInfo(79318)] = 9, -- Dominion
         },
 
         [L["The Bastion of Twilight"]] = {
@@ -77,7 +81,7 @@ raid_debuffs = {
             [GetSpellInfo(82762)] = 7, -- Waterlogged
             [GetSpellInfo(83099)] = 7, -- Lightning Rod
             [GetSpellInfo(82285)] = 7, -- Elemental Stasis
-            [GetSpellInfo(92488)] = 8, -- Gravity Well
+            [GetSpellInfo(92488)] = 8, -- Gravity Crush
             --Cho'gall
             [GetSpellInfo(86028)] = 6, -- Cho's Blast
             [GetSpellInfo(86029)] = 6, -- Gall's Blast
@@ -87,6 +91,8 @@ raid_debuffs = {
             [GetSpellInfo(81831)] = 8, -- Corruption: Sickness
             [GetSpellInfo(82125)] = 8, -- Corruption: Malformation
             [GetSpellInfo(82170)] = 8, -- Corruption: Absolute 
+			--Sinestra
+            [GetSpellInfo(92956)] = 9, -- Wrack
         },
 
         [L["Throne of the Four Winds"]] = {
