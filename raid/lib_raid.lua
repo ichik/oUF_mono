@@ -216,19 +216,21 @@
     h:SetAllPoints(f.Health)
     h:SetFrameLevel(10)
     local name = lib.gen_fontstring(h, cfg.font, cfg.fontsize)
-    local hpval = lib.gen_fontstring(h, cfg.font, cfg.fontsize-1)
+     if cfg.ShowDeficit then
+		local hpval = lib.gen_fontstring(h, cfg.font, cfg.fontsize-1)
+		hpval:SetPoint("CENTER", f.Health, "BOTTOM",0,8)
+		hpval:SetShadowOffset(1.25, -1.25)
+	end
     name:SetPoint("CENTER", f.Health, "CENTER",0,5)
     name:SetShadowOffset(1.25, -1.25)
     name:SetJustifyH("LEFT")
 	name.overrideUnit = true
-    hpval:SetPoint("CENTER", f.Health, "BOTTOM",0,8)
-    hpval:SetShadowOffset(1.25, -1.25)
 	--name.frequentUpdates = 1 -- TEMPORARY FIX just making sure this tag is getting propperly updated
 	--hpval.frequentUpdates = 0.3 -- TEMPORARY FIX just making sure this tag is getting propperly updated
     f:Tag(name, '[mono:gridcolor][mono:gridname]')
-    if f.mystyle == "mtframe" then
+    if f.mystyle == "mtframe" and cfg.ShowDeficit then
       f:Tag(hpval, '[mono:hpperc]')
-    else
+    elseif cfg.ShowDeficit then
       f:Tag(hpval, '[mono:hpraid]')
     end
   end

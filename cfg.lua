@@ -121,6 +121,7 @@
 	cfg.healoverflow = 1 							-- overhealing display (1 = disabled, may take values higher than 1)
   cfg.healtext = false 								-- show/hide heal prediction text
   cfg.ShowRaidBG = false 							-- show background frame for raid frames
+  cfg.ShowDeficit = true
 	
   -- HANDOVER
   ns.cfg = cfg
