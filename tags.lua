@@ -252,7 +252,40 @@ oUF.Tags['mono:targeticon'] = function(u)
 end
 oUF.TagEvents['mono:targeticon'] = 'PLAYER_TARGET_CHANGED'
 
--- class specific powers 
+-- LFD role tag
+oUF.Tags['mono:LFD'] = function(u)
+	local role = UnitGroupRolesAssigned(u)
+	if role == "HEALER" then
+		return "|cff8AFF30H|r"
+	elseif role == "TANK" then
+		return "|cffFFF130T|r"
+	elseif role == "DAMAGER" then
+		return "|cffFF6161D|r"
+	end
+end
+oUF.TagEvents['mono:LFD'] = 'PLAYER_ROLES_ASSIGNED PARTY_MEMBERS_CHANGED'
+
+-- heal prediction value tag
+oUF.Tags['mono:heal'] = function(u)
+    local incheal = UnitGetIncomingHeals(u, 'player') or 0
+    if incheal > 0 then
+        return "|cff8AFF30+"..SVal(incheal).."|r"
+    end
+end
+oUF.TagEvents['mono:heal'] = 'UNIT_HEAL_PREDICTION'
+
+-- AltPower value tag
+oUF.Tags['mono:altpower'] = function(unit)
+	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
+	local max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
+	if(max > 0 and not UnitIsDeadOrGhost(unit)) then
+		return ("%s%%"):format(math.floor(cur/max*100+.5))
+	end
+end
+oUF.TagEvents['mono:altpower'] = 'UNIT_POWER'
+
+-------------[[ class specific tags ]]-------------
+-- special powers
 oUF.Tags['mono:sp'] = function(u)
 	local _, class = UnitClass(u)
 	local SP, spcol = 0,{}
@@ -326,7 +359,31 @@ oUF.Tags['mono:ls'] = function(u)
 	end
 end
 oUF.TagEvents['mono:ls'] = 'UNIT_AURA'
-
+-- earth shield
+oUF.earthCount = {1,2,3,4,5,6,7,8,9}
+oUF.Tags['raid:earth'] = function(u) 
+	local c = select(4, UnitAura(u, GetSpellInfo(974))) 
+	if c then return '|cffFFCF7F'..oUF.earthCount[c]..'|r' end end
+oUF.TagEvents['raid:earth'] = 'UNIT_AURA'
+-- Prayer of Mending
+oUF.pomCount = {1,2,3,4,5,6}
+oUF.Tags['raid:pom'] = function(u) local c = select(4, UnitAura(u, GetSpellInfo(33076))) if c then return "|cffFFCF7F"..oUF.pomCount[c].."|r" end end
+oUF.TagEvents['raid:pom'] = "UNIT_AURA"
+-- Lifebloom
+oUF.lbCount = { 1, 2, 3 }
+oUF.Tags['raid:lb'] = function(u) 
+	local name, _,_, c,_,_, expirationTime, fromwho,_ = UnitAura(u, GetSpellInfo(33763))
+	if not (fromwho == "player") then return end
+	local spellTimer = GetTime()-expirationTime
+	if spellTimer > -2 then
+		return "|cffFF0000"..oUF.lbCount[c].."|r"
+	elseif spellTimer > -4 then
+		return "|cffFF9900"..oUF.lbCount[c].."|r"
+	else
+		return "|cffA7FD0A"..oUF.lbCount[c].."|r"
+	end
+end
+oUF.TagEvents['raid:lb'] = "UNIT_AURA"
 -- shrooooooooooooms (Wild Mushroom)
 if select(2, UnitClass("player")) == "DRUID" then
 	for i=1,3 do
@@ -340,63 +397,3 @@ if select(2, UnitClass("player")) == "DRUID" then
 		oUF.UnitlessTagEvents.PLAYER_TOTEM_UPDATE = true
 	end
 end
-
--- LFD role tag
-oUF.Tags['mono:LFD'] = function(u)
-	local role = UnitGroupRolesAssigned(u)
-	if role == "HEALER" then
-		return "|cff8AFF30H|r"
-	elseif role == "TANK" then
-		return "|cffFFF130T|r"
-	elseif role == "DAMAGER" then
-		return "|cffFF6161D|r"
-	end
-end
-oUF.TagEvents['mono:LFD'] = 'PLAYER_ROLES_ASSIGNED PARTY_MEMBERS_CHANGED'
-
--- heal prediction value tag
-oUF.Tags['mono:heal'] = function(u)
-    local incheal = UnitGetIncomingHeals(u, 'player') or 0
-    if incheal > 0 then
-        return "|cff8AFF30+"..SVal(incheal).."|r"
-    end
-end
-oUF.TagEvents['mono:heal'] = 'UNIT_HEAL_PREDICTION'
-
--- AltPower value tag
-oUF.Tags['mono:altpower'] = function(unit)
-	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
-	local max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
-	if(max > 0 and not UnitIsDeadOrGhost(unit)) then
-		return ("%s%%"):format(math.floor(cur/max*100+.5))
---	else
---		return ''
-	end
-end
-oUF.TagEvents['mono:altpower'] = 'UNIT_POWER'
-
---[[ 
-oUF.Tags['mono:exp'] = function(unit)
-	if UnitLevel("player") ~= MAX_PLAYER_LEVEL then
-		if GetXPExhaustion() then
-			return ("XP: %s/%s (%.1f%% R)"):format(SVal(UnitXP("player")), SVal(UnitXPMax("player")), (GetXPExhaustion() or 0) / UnitXPMax("player") * 100)
-		else
-			return ("XP: %s/%s"):format(SVal(UnitXP("player")), SVal(UnitXPMax("player")))
-		end
-	else 
-		return
-	end
-end
-oUF.TagEvents['mono:exp'] = "PLAYER_XP_UPDATE UPDATE_EXHAUSTION UNIT_LEVEL"
-
-
-oUF.Tags['mono:rep'] = function(unit)
-	local faction, lvl, min, max, val = GetWatchedFactionInfo()
-	if faction then
-		local color = oUF.colors.reaction[lvl] or cfg.colors.text
-		return ("|cFF%.2x%.2x%.2x%s: %s/%s|r"):format(color[1] * 255, color[2] * 255, color[3] * 255, faction, val - min, SVal(max - min))
-	else
-		return
-	end
-end
-oUF.TagEvents['mono:rep'] = "UNIT_LEVEL UPDATE_FACTION CHAT_MSG_COMBAT_FACTION_CHANGE" ]]

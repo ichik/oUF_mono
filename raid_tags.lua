@@ -64,7 +64,7 @@ end
 -----------------[[ GENERAL TAGS ]]-----------------
 oUF.Tags['raid:wrack'] = function(u) -- Sinestra's specific debuff
 	local name,_,_,_,dur,_,remaining = CalcDebuff(u, GetSpellInfo(92956)) -- 57724 debug
-	if not name then return end
+	if not (name and remaining) then return end
 	if remaining > 14 then -- FOAD
 		return "|cffFF0000"..x.."|r"
 	elseif remaining > 10 then -- criticall! dispel now!
@@ -83,9 +83,6 @@ oUF.TagEvents['raid:aggro'] = "UNIT_THREAT_SITUATION_UPDATE"
 
 -----------------[[ CLASS SPECIFIC TAGS ]]-----------------
 --priest
-oUF.pomCount = {1,2,3,4,5,6}
-oUF.Tags['raid:pom'] = function(u) local c = select(4, UnitAura(u, L["Prayer of Mending"])) if c then return "|cffFFCF7F"..oUF.pomCount[c].."|r" end end
-oUF.TagEvents['raid:pom'] = "UNIT_AURA"
 oUF.Tags['raid:rnw'] = function(u)
     local name, _,_,_,_,_, expirationTime, fromwho = UnitAura(u, GetSpellInfo(139))
     if(fromwho == "player") then
@@ -123,20 +120,6 @@ end
 oUF.TagEvents['raid:wsTime'] = "UNIT_AURA"
 
 --druid
-oUF.lbCount = { 1, 2, 3 }
-oUF.Tags['raid:lb'] = function(u) 
-	local name, _,_, c,_,_, expirationTime, fromwho,_ = UnitAura(u, L["Lifebloom"])
-	if not (fromwho == "player") then return end
-	local spellTimer = GetTime()-expirationTime
-	if spellTimer > -2 then
-		return "|cffFF0000"..oUF.lbCount[c].."|r"
-	elseif spellTimer > -4 then
-		return "|cffFF9900"..oUF.lbCount[c].."|r"
-	else
-		return "|cffA7FD0A"..oUF.lbCount[c].."|r"
-	end
-end
-oUF.TagEvents['raid:lb'] = "UNIT_AURA"
 oUF.Tags['raid:rejuv'] = function(u) 
   local name, _,_,_,_,_,_, fromwho,_ = UnitAura(u, L["Rejuvenation"])
   if not (fromwho == "player") then return end
@@ -204,15 +187,11 @@ oUF.Tags['raid:rip'] = function(u)
 	if not (fromwho == 'player') then return end
 	if UnitAura(u, L['Riptide']) then return '|cff00FEBF'..x..'|r' end end
 oUF.TagEvents['raid:rip'] = 'UNIT_AURA'
-
 oUF.Tags['raid:ripTime'] = function(u)
 	local name, _,_,_,_,_, expirationTime, fromwho,_ = UnitAura(u, L['Riptide'])
 	if (fromwho == "player") then return getTime(expirationTime) end 
 end
 oUF.TagEvents['raid:ripTime'] = 'UNIT_AURA'
-oUF.earthCount = {1,2,3,4,5,6,7,8,9}
-oUF.Tags['raid:earth'] = function(u) local c = select(4, UnitAura(u, L['Earth Shield'])) if c then return '|cffFFCF7F'..oUF.earthCount[c]..'|r' end end
-oUF.TagEvents['raid:earth'] = 'UNIT_AURA'
 
 --DK
 oUF.Tags['raid:abomight'] = function(u) if not(UnitAura(u, GetSpellInfo(53138)) or UnitAura(u, GetSpellInfo(79102))) then return "|cffFF0000"..x.."|r" end end

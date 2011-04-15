@@ -29,10 +29,12 @@
   cfg.showraid = true				-- Raid frames
   
   -- Elements
-  cfg.playerauras = "NONE" 			-- small aura frame for player, available options: "BUFFS", "DEBUFFS", "AURAS", "NONE"
+  cfg.ReverseHPbars = true			-- fill health bars from right to left instead of standard left -> right direction	(NEW!)
+  cfg.playerauras = "DEBUFFS"  		-- small aura frame for player, available options: "BUFFS", "DEBUFFS", "AURAS", "NONE"
   cfg.auratimers = true 			-- aura timers
-    cfg.ATIconSizeThreshold = 10 	-- how big some icon should be to display the custom timer
-    cfg.ATSize = 12 				-- aura timer font size
+    cfg.ATIconSizeThreshold = 10	-- how big some icon should be to display the custom timer
+    cfg.ATSize = 11  				-- aura timer font size
+	cfg.PlayerTimersOnly = true  	-- show timers only for auras cast by player	(NEW!)
   cfg.showfaketarget = true 		-- fake target bars that spawn if you don't have anything targeted
   cfg.RMalpha = 0.6 				-- raid mark alpha
   cfg.RMsize = 16 					-- raid mark size
@@ -42,7 +44,7 @@
   cfg.focusCBuserplaced = true		-- false to lock focus cast bar to the focus frame
     cfg.focusCBposition = {"CENTER",UIParent,"BOTTOM",10,510} -- focus cb position
     cfg.focusCBwidth = 280			-- focus cb width
-    cfg.focusCBheight = 15			-- focus cb height
+    cfg.focusCBheight = 17			-- focus cb height
   cfg.playerCBuserplaced = false	-- false to lock player cast bar to the player frame
 
     cfg.playerCBposition = {"CENTER",UIParent,"BOTTOM",10,320} -- player cb position
@@ -61,29 +63,30 @@
   cfg.PEpos = {"TOPLEFT", "oUF_monoPlayerFrame", "BOTTOMLEFT", 0, -37} -- pet
   cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -42} -- ToT
   cfg.Fpos = {"TOPLEFT", "oUF_monoTargetFrame", "TOPRIGHT", 3, 0} -- focus
+  cfg.FTpos = {"TOPLEFT", "oUF_monoTargetFrame", "BOTTOMLEFT", 0, -37}
   cfg.PApos = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 95, 352} -- party
     cfg.PAspacing = 40 -- spacing between party units
-  cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -117, 392}			-- Arena
-  cfg.BOpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -117, 392}			-- Boss
+  cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Arena
+  cfg.BOpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Boss
     cfg.ABspacing = 56 -- spacing between arena and boss units
   cfg.RAIDpos = {"TOPLEFT", "UIParent", "BOTTOM", -164, 137} 				-- Raid frames
   
   -- Size and scale
-  cfg.Pwidth = 232 		-- Player frame
+  cfg.Pwidth = 229 		-- Player frame
   cfg.Pheight = 24
   cfg.Pscale = 1
   
-  cfg.Twidth = 232 		-- Target frame
+  cfg.Twidth = 229 		-- Target frame
   cfg.Theight = 24
   cfg.Tscale = 1
   
-  cfg.PTTwidth = 133 	-- Pet and ToT frames
+  cfg.PTTwidth = 123 	-- Pet and ToT frames
   cfg.PTTheight = 20
   cfg.PTTscale = 0.9
   
   cfg.Fwidth = 123 		-- Focus frame
-  cfg.Fheight = 25
-  cfg.Fscale = 1
+  cfg.Fheight = 20
+  cfg.Fscale = 0.9
   
   cfg.PABwidth = 196 	-- Party (+partypet), Arena (+arenatargets) and Boss frames
   cfg.PABheight = 22
@@ -120,7 +123,6 @@
 	cfg.healalpha = 0.25 							-- heal prediction bar alpha
 	cfg.healoverflow = 1 							-- overhealing display (1 = disabled, may take values higher than 1)
   cfg.healtext = false 								-- show/hide heal prediction text
-  cfg.ShowRaidBG = false 							-- show background frame for raid frames
   cfg.ShowDeficit = true
 	
   -- HANDOVER

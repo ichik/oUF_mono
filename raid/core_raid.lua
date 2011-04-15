@@ -30,7 +30,6 @@
     self.Health.frequentUpdates = true
     self.Health.colorDisconnected = true
     self.Health.bg.multiplier = 0.1
-	if cfg.ShowRaidBG then lib_raid.gen_background(self) end
   end 
   
   local function Raid40Style(self)
