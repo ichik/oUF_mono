@@ -29,8 +29,8 @@
   cfg.showraid = true				-- Raid frames
   
   -- Elements
-  cfg.ReverseHPbars = true			-- fill health bars from right to left instead of standard left -> right direction	(NEW!)
-  cfg.playerauras = "DEBUFFS"  		-- small aura frame for player, available options: "BUFFS", "DEBUFFS", "AURAS", "NONE"
+  cfg.ReverseHPbars = false			-- fill health bars from right to left instead of standard left -> right direction	(NEW!)
+  cfg.playerauras = "NONE"  		-- small aura frame for player, available options: "BUFFS", "DEBUFFS", "AURAS", "NONE"
   cfg.auratimers = true 			-- aura timers
     cfg.ATIconSizeThreshold = 10	-- how big some icon should be to display the custom timer
     cfg.ATSize = 11  				-- aura timer font size
