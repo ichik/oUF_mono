@@ -612,8 +612,8 @@
       d.initialAnchor = 'BOTTOMLEFT'
 	  d.num = 15
 	  d.size = 23
-      d:SetHeight((b.size+d.spacing)*2)
-      d:SetWidth((b.size+d.spacing)*9)
+      d:SetHeight((d.size+d.spacing)*2)
+      d:SetWidth((d.size+d.spacing)*9)
 	  d.PreSetPosition = lib.PreSetPosition
     end
     d.PostCreateIcon = lib.PostCreateIcon
