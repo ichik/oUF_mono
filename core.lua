@@ -1,7 +1,9 @@
   local addon, ns = ...
   local cfg = ns.cfg
   local lib = ns.lib
---for i=1,40 do local rf=_G["CompactRaidFrame"..i] rf:SetScale(0.9) end CompactRaidFrameContainer:SetScale(0.9)
+  
+  -- compatibility with older versions cfg
+  if not cfg.FTpos then cfg.FTpos = {"TOPLEFT", "oUF_monoTargetFrame", "BOTTOMLEFT", 0, -37} end
   -----------------------------
   -- STYLE FUNCTIONS
   -----------------------------
@@ -13,9 +15,10 @@
     lib.gen_highlight(self)
     lib.gen_RaidMark(self)
 	self.Health.frequentUpdates = true
-    self.colors.smooth = {1,0,0, .7,.41,.44, .3,.3,.3}
+	if cfg.ReverseHPbars then self.colors.smooth = {.8,.2,.2, .7,.4,.4, .5,.5,.5} else self.colors.smooth = {1,0,0, .7,.41,.44, .3,.3,.3} end
     self.Health.colorSmooth = true
-	self.Health.bg.multiplier = 0.1
+	--self.Health.colorHealth = true self.colors.health = {.6,.3,.3}
+	self.Health.bg.multiplier = 0.3
 	self.Health.colorDisconnected = true
   end
 
@@ -66,6 +69,7 @@
 	lib.gen_combat_feedback(self)
     if cfg.showfaketarget then lib.gen_faketarget(self) end
 	if(isSingle) then self:SetSize(self.width,self.height) end
+	--self.Auras.onlyShowPlayer = true
   end  
   
   --the tot style
@@ -77,8 +81,10 @@
     self.Health.colorClass = false
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
-    lib.createBuffs(self)
-    lib.createDebuffs(self)
+    if unit == "targettarget" then 
+		--lib.createBuffs(self)
+		lib.createDebuffs(self) 
+	end
 	if(isSingle) then self:SetSize(self.width,self.height) end
   end 
   
@@ -93,7 +99,7 @@
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
     lib.gen_castbar(self)
-    lib.createBuffs(self)
+    --lib.createBuffs(self)
     lib.createDebuffs(self)
 	if(isSingle) then self:SetSize(self.width,self.height) end
   end  
@@ -108,24 +114,13 @@
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
     lib.gen_castbar(self)
-    lib.createAuras(self)
+    --lib.createAuras(self)
 	if(isSingle) then self:SetSize(self.width,self.height) end
   end
   
-  --focus target style
-  local function CreateFocusTargetStyle(self, unit, isSingle)
-    self.width = cfg.Fwidth
-    self.height = cfg.Fheight/1.7
-    self.mystyle = "focus"
-    
-    genStyle(self)
-	self.Power:Hide()
-	if(isSingle) then self:SetSize(self.width,self.height) end
-  end
-
   --partypet style
   local function CreatePartyPetStyle(self)
-    self.width = cfg.PABheight+cfg.PABheight/2.5+3
+    self.width = cfg.PABheight+cfg.PABheight/3+3
     self.height = self.width
     self.mystyle = "partypet"
     genStyle(self)
@@ -150,12 +145,13 @@
     self.Range = {
       insideAlpha = 1,
       outsideAlpha = 0.6}
---    lib.gen_portrait(self)
+    --lib.gen_portrait(self)
     lib.createBuffs(self)
     lib.createDebuffs(self)
     lib.gen_InfoIcons(self)
     lib.gen_targeticon(self)
 	lib.gen_LFDindicator(self)
+	lib.gen_specificpower(self)
   end  
   
   --arena frames
@@ -168,6 +164,7 @@
     self.Power.frequentUpdates = true
     self.Power.colorPower = true
     self.Power.bg.multiplier = 0.3
+	--lib.gen_portrait(self)
     lib.createBuffs(self)
     lib.createDebuffs(self)
     lib.gen_ppstrings(self)
@@ -179,7 +176,7 @@
 
   --mini arena targets
   local function CreateArenaTargetStyle(self, unit, isSingle)
-    self.width = cfg.PABheight+cfg.PABheight/2.5+3
+    self.width = cfg.PABheight+cfg.PABheight/3+3
     self.height = self.width
     self.mystyle = "arenatarget"
     genStyle(self)
@@ -208,7 +205,6 @@
   oUF:RegisterStyle("monoTarget", CreateTargetStyle)
   oUF:RegisterStyle("monoToT", CreateToTStyle)
   oUF:RegisterStyle("monoFocus", CreateFocusStyle)
-  oUF:RegisterStyle("monoFocusTarget", CreateFocusTargetStyle)
   oUF:RegisterStyle("monoPet", CreatePetStyle)
   oUF:RegisterStyle("monoParty", CreatePartyStyle)
   oUF:RegisterStyle("monoArena", CreateArenaStyle)
@@ -238,9 +234,9 @@ oUF:Factory(function(self)
     local focus = self:Spawn("focus", "oUF_monoFocusFrame")
 	focus:SetPoint(unpack(cfg.Fpos))
 	focus:SetScale(cfg.Fscale)
-	self:SetActiveStyle("monoFocusTarget")
-	local focust = self:Spawn("focustarget", "oUF_monoFocusFrame")
-	focust:SetPoint("TOP","oUF_monoFocusFrame","BOTTOM",0,-cfg.Fheight/1.6)
+	self:SetActiveStyle("monoToT")
+	local focust = self:Spawn("focustarget", "oUF_monoFocusTargetFrame")
+	focust:SetPoint(unpack(cfg.FTpos))
 	focust:SetScale(cfg.Fscale)
   else
     oUF:DisableBlizzard'focus'

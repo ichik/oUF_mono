@@ -221,8 +221,6 @@
 	name.overrideUnit = true
     hpval:SetPoint("CENTER", f.Health, "BOTTOM",0,8)
     hpval:SetShadowOffset(1.25, -1.25)
-	--name.frequentUpdates = 1 -- TEMPORARY FIX just making sure this tag is getting propperly updated
-	--hpval.frequentUpdates = 0.3 -- TEMPORARY FIX just making sure this tag is getting propperly updated
     f:Tag(name, '[mono:gridcolor][mono:gridname]')
     if f.mystyle == "mtframe" then
       f:Tag(hpval, '[mono:hpperc]')
@@ -385,31 +383,5 @@
     --f:RegisterEvent('PLAYER_ENTERING_WORLD', getzone)
   end
   
-  lib_raid.gen_background = function(f)	
-	local rbg
-	if not RaidBG then
-		rbg = CreateFrame("frame","RaidBG",UIParent) 
-		rbg:SetWidth(cfg.width*5+cfg.spacing*3+16)
-		rbg:SetHeight(cfg.height*5+cfg.spacing*3+15)
-		rbg:SetPoint(cfg.RAIDpos[1],cfg.RAIDpos[2],cfg.RAIDpos[3],cfg.RAIDpos[4]-6,cfg.RAIDpos[5]+6)
-		rbg:SetBackdrop({edgeFile = "interface\\Tooltips\\UI-Tooltip-Border",edgeSize = 5})
-		rbg.bg = rbg:CreateTexture(nil, "PARENT")
-		rbg.bg:SetTexture("interface\\Tooltips\\UI-Tooltip-Background")
-		rbg.bg:SetBlendMode("BLEND")
-		rbg.bg:SetPoint("TOPLEFT", rbg, "TOPLEFT", 0, 0);
-		rbg.bg:SetPoint("BOTTOMRIGHT", rbg, "BOTTOMRIGHT", 0, 0);
-		rbg.bg:SetVertexColor(.15,.15,.15,.75)
-		rbg:SetFrameStrata("BACKGROUND") 
-		rbg:SetBackdropBorderColor(0,0,0,1)
-		rbg:Hide()
-		rbg:EnableMouse(true) 
-		if not cfg.raid5ON then
-			rbg:RegisterEvent('PLAYER_LOGIN')
-			rbg:RegisterEvent('RAID_ROSTER_UPDATE')
-			rbg:SetScript('OnEvent', function(self)	if oUF_RaidUnitButton1:IsVisible() then	self:Show() else self:Hide() end end)
-		end
-	end
-  end
-
   --hand the lib to the namespace for further usage
   ns.lib_raid = lib_raid

@@ -13,14 +13,15 @@
   oUF.colors.power['RUNIC_POWER'] = {.45,.45,.75}
   local class = select(2, UnitClass("player"))
 
-  -----------------------------
-  -- FUNCTIONS
-  -----------------------------
   -- my config 
   if GetUnitName("player") == "Strigoy" then
 	cfg.playerauras = "DEBUFFS"
   end
-  
+
+  -----------------------------
+  -- FUNCTIONS
+  -----------------------------
+
   --fontstring func
   lib.gen_fontstring = function(f, name, size, outline)
     local fs = f:CreateFontString(nil, "OVERLAY")
@@ -73,31 +74,85 @@
     f:SetScript("OnEnter", UnitFrame_OnEnter)
     f:SetScript("OnLeave", UnitFrame_OnLeave)
   end
+  
+  lib.PostUpdateHealth = function(s, u, min, max)
+	if UnitIsDeadOrGhost(u) then s:SetValue(0) end
+  end
+  local ReverseBar
+  do
+  -- reposition the status bar texture to fill from the right to left, thx Saiket
+	local UpdaterOnUpdate = function(Updater)
+		Updater:Hide()
+		local b = Updater:GetParent()
+		local tex = b:GetStatusBarTexture()
+		tex:ClearAllPoints()
+		tex:SetPoint("BOTTOMRIGHT")
+		tex:SetPoint("TOPLEFT", b, "TOPRIGHT", (b:GetValue()/select(2,b:GetMinMaxValues())-1)*b:GetWidth(), 0)
+	end
+	local OnChanged = function(bar)
+		bar.Updater:Show()
+	end
+	function ReverseBar(f)
+		local bar = CreateFrame("StatusBar", nil, f) --separate frame for OnUpdates
+		bar.Updater = CreateFrame("Frame", nil, bar)
+		bar.Updater:Hide()
+		bar.Updater:SetScript("OnUpdate", UpdaterOnUpdate)
+		bar:SetScript("OnSizeChanged", OnChanged)
+		bar:SetScript("OnValueChanged", OnChanged)
+		bar:SetScript("OnMinMaxChanged", OnChanged)
+		return bar;
+	end
+  end
 
 ------ [Building frames]
   --gen healthbar func
   lib.gen_hpbar = function(f)
     --statusbar
-    local s = CreateFrame("StatusBar", nil, f)
+	local s
+	if cfg.ReverseHPbars then 
+		s = ReverseBar(f) 
+		s.PostUpdate = lib.PostUpdateHealth  
+		s:SetAlpha(0.9)
+	else 
+		s = CreateFrame("StatusBar", nil, f) 
+		s:SetAlpha(0.7)
+	end
+    --local s = ReverseBar(f)--CreateFrame("StatusBar", nil, f)--
     s:SetStatusBarTexture(cfg.statusbar_texture)
     fixStatusbar(s)
     s:SetHeight(f.height)
     s:SetWidth(f.width)
     s:SetPoint("TOPLEFT",0,0)
-    s:SetAlpha(0.65)
+    --s:SetAlpha(0.9)
     s:SetOrientation("HORIZONTAL") 
-    --helper
+	s:SetFrameLevel(5)
+    --shadow backdrop
     local h = CreateFrame("Frame", nil, s)
     h:SetFrameLevel(0)
     h:SetPoint("TOPLEFT",-4,4)
     h:SetPoint("BOTTOMRIGHT",4,-4)
     lib.gen_backdrop(h)
-    --bg
-    local b = s:CreateTexture(nil, "BACKGROUND")
+    --bar bg
+	local bg = CreateFrame("Frame", nil, s)
+	bg:SetFrameLevel(s:GetFrameLevel()-2)
+    bg:SetAllPoints(s)
+    local b = bg:CreateTexture(nil, "BACKGROUND")
     b:SetTexture(cfg.statusbar_texture)
     b:SetAllPoints(s)
+	
     f.Health = s
     f.Health.bg = b
+  end
+  --3d portrait behind hp bar
+  lib.gen_portrait = function(f)
+    s = f.Health
+	local p = CreateFrame("PlayerModel", nil, f)
+	p:SetFrameLevel(s:GetFrameLevel()-1)
+    p:SetWidth(f.width-2)
+    p:SetHeight(f.height-2)
+    p:SetPoint("TOP", s, "TOP", 0, -2)
+	p:SetAlpha(.25)
+    f.Portrait = p
   end
   --gen hp strings func
   lib.gen_hpstrings = function(f, unit)
@@ -119,8 +174,6 @@
       name:SetJustifyH("LEFT")
       hpval:SetPoint("CENTER", f.Health, "CENTER",0,-6)
     else
-	  --name.frequentUpdates = 1 -- TEMPORARY FIX just making sure this tag is getting propperly updated
-	  --hpval.frequentUpdates = 0.3 -- TEMPORARY FIX just making sure this tag is getting propperly updated
       name:SetPoint("LEFT", f.Health, "LEFT",3,0)
       hpval:SetPoint("RIGHT", f.Health, "RIGHT",-3,0)
       name:SetJustifyH("LEFT")
@@ -197,23 +250,12 @@
     end
     f:Tag(info, '[mono:info]')
   end
-  
-  --3d portrait behind hp bar
-  lib.gen_portrait = function(f)
-    local p = CreateFrame("PlayerModel", nil, f)
-    p:SetFrameStrata("BACKGROUND")
-	p:SetFrameLevel(3)
-    p:SetWidth(f.width-30)
-    p:SetHeight(f.height-2)
-    p:SetPoint("TOP", f, "TOP", 0, -2)
-    f.Portrait = p
-  end
 
------- [Castbar, +mirror castbar too!]
+------ [Castbar, +mirror castbar]
   --gen castbar
   lib.gen_castbar = function(f)
     local s = CreateFrame("StatusBar", "oUF_monoCastbar"..f.mystyle, f)
-    s:SetSize(f.width-(f.height/1.7+4),f.height/1.7)
+    s:SetSize(f.width-(f.height/1.5+4),f.height/1.5)
     s:SetStatusBarTexture(cfg.statusbar_texture)
     s:SetStatusBarColor(cfg.cbcolor[1], cfg.cbcolor[2], cfg.cbcolor[3],1)
     s:SetFrameLevel(9)
@@ -386,9 +428,9 @@
           local time = lib.FormatTime(self.timeLeft)
           self.remaining:SetText(time)
           if self.timeLeft < 5 then
-            self.remaining:SetTextColor(1, 0, 0)
+            self.remaining:SetTextColor(1, .3, .2)
           else
-            self.remaining:SetTextColor(0.84, 0.75, 0.65)
+            self.remaining:SetTextColor(.9, .7, .2)
           end
         else
           self.remaining:Hide()
@@ -407,11 +449,15 @@
       icon.icon:SetDesaturated(false)
     end
     -- Creating aura timers
-      if duration and duration > 0 and cfg.auratimers then
-        icon.remaining:Show()
-      else
-        icon.remaining:Hide()
-      end
+    if duration and duration > 0 and cfg.auratimers then
+      if cfg.PlayerTimersOnly and unitCaster ~= 'player' then 
+		if unit=='player' and icon.debuff then icon.remaining:Show() else icon.remaining:Hide() end
+	  else 
+		icon.remaining:Show() 
+	  end
+    else
+      icon.remaining:Hide()
+    end
     if unit == 'player' or unit == 'target' then
       icon.duration = duration
       icon.timeLeft = expirationTime
@@ -430,7 +476,7 @@
     button.count:ClearAllPoints()
     button.count:SetJustifyH("RIGHT")
     button.count:SetPoint("BOTTOMRIGHT", 2, -2)
-    button.count:SetTextColor(0.7,0.7,0.7)
+    button.count:SetTextColor(1,1,1)
     --helper
     local h = CreateFrame("Frame", nil, button)
     h:SetFrameLevel(0)
@@ -442,15 +488,25 @@
     h2:SetAllPoints(button)
     h2:SetFrameLevel(10)
     button.remaining = lib.gen_fontstring(h2, cfg.font, cfg.ATSize, "THINOUTLINE")
-    button.remaining:SetPoint("TOP", 0, -2)
+	--button.remaining:SetShadowColor(0, 0, 0)--button.remaining:SetShadowOffset(2, -1)
+    button.remaining:SetPoint("TOPLEFT", 0, -0.5)
     --overlay texture for debuff types display
     button.overlay:SetTexture(cfg.auratex)
-    button.overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -1.6, 1.6)
-    button.overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1.6, -1.6)
-    button.overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
+    button.overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -1, 1)
+    button.overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1, -1)
+    button.overlay:SetTexCoord(0.04, 0.96, 0.04, 0.96)
     button.overlay.Hide = function(self) self:SetVertexColor(0, 0, 0) end
   end
-
+  -- position update for certain class/specs
+  lib.PreSetPosition = function(self, num)
+	local f = self:GetParent()
+	local pttree = GetPrimaryTalentTree(false, false, GetActiveTalentGroup())
+	if f.mystyle=="player" and ((class=="DRUID" and pttree == 1) or class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then
+		self:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
+	else
+		self:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1.5, 4)
+	end
+  end
   --auras for certain frames
   lib.createAuras = function(f)
     a = CreateFrame('Frame', nil, f)
@@ -459,25 +515,22 @@
     a['growth-y'] = 'UP' 
     a.initialAnchor = 'BOTTOMLEFT'
     a.gap = true
-    a.spacing = 6.1
-    a.size = 20
+    a.spacing = 6
+    a.size = 23
     a.showDebuffType = true
-	--a.onlyShowPlayer = true
     if f.mystyle=="target" or (f.mystyle=="player" and cfg.playerauras=="AURAS") then
-      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
-        -- making space for rune or totem bar
-        a:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
+      if not f.mystyle=="target" then 
+		a.PreSetPosition = lib.PreSetPosition
       end
       a:SetHeight((a.size+a.spacing)*2)
-      a:SetWidth((a.size+a.spacing)*9)
-      a.numBuffs = 20 
-      a.numDebuffs = 20
+      a:SetWidth((a.size+a.spacing)*8)
+      a.numBuffs = 15 
+      a.numDebuffs = 15
     elseif f.mystyle=="focus" then
-      a.spacing = 5
       a:SetHeight((a.size+a.spacing)*2)
-      a:SetWidth((a.size+a.spacing)*5)
-      a.numBuffs = 10 
-      a.numDebuffs = 10 
+      a:SetWidth((a.size+a.spacing)*4)
+      a.numBuffs = 8
+      a.numDebuffs = 8
     end
     f.Auras = a
     a.PostCreateIcon = lib.PostCreateIcon
@@ -489,40 +542,35 @@
     b.initialAnchor = "TOPLEFT"
     b["growth-y"] = "DOWN"
     b.num = 5
-    b.size = 18
-    b.spacing = 4.5
+    b.size = 19
+    b.spacing = 6
     b:SetHeight((b.size+b.spacing)*2)
     b:SetWidth((b.size+b.spacing)*12)
-    if f.mystyle=="pet" then
+    if f.mystyle=="tot" then
       b.initialAnchor = "TOPRIGHT"
       b:SetPoint("TOPRIGHT", f, "TOPLEFT", -b.spacing, -2)
       b["growth-x"] = "LEFT"
-    elseif f.mystyle=="tot" then
+    elseif f.mystyle=="pet" then
       b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -2)
     elseif f.mystyle=="arena" then
       b.showBuffType = true
       b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -2)
+	  b.size = 18
       b.num = 4
       b:SetWidth((b.size+b.spacing)*4)
     elseif f.mystyle=='party' then
       b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -b.spacing)
-      b.num = 9
-      b.spacing = 4
+	  b.size = 19
+      b.num = 8
 	elseif f.mystyle=="player" and cfg.playerauras=="BUFFS" then
-      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
-        -- making space for rune or totem bar
-        b:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
-	  else
-		b:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1.5, 4)
-      end
 	  b['growth-x'] = 'RIGHT'
       b['growth-y'] = 'UP' 
       b.initialAnchor = 'BOTTOMLEFT'
-	  b.num = 18
-	  b.size = 20
-	  b.spacing = 6.1
+	  b.num = 15
+	  b.size = 23
       b:SetHeight((b.size+b.spacing)*2)
       b:SetWidth((b.size+b.spacing)*9)
+	  b.PreSetPosition = lib.PreSetPosition
     end
     b.PostCreateIcon = lib.PostCreateIcon
     b.PostUpdateIcon = lib.PostUpdateIcon
@@ -534,42 +582,39 @@
     d.initialAnchor = "TOPRIGHT"
     d["growth-y"] = "DOWN"
     d.num = 4
-    d.size = 18
-    d.spacing = 4.5
+    d.size = 19
+    d.spacing = 6
     d:SetHeight((d.size+d.spacing)*2)
-    d:SetWidth((d.size+d.spacing) * 5)
+    d:SetWidth((d.size+d.spacing)*5)
     d.showDebuffType = true
-    if f.mystyle=="pet" then
+    if f.mystyle=="tot" then
       d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -2)
       d.initialAnchor = "TOPLEFT"
-    elseif f.mystyle=="tot" then
+    elseif f.mystyle=="pet" then
       d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -2)
       d["growth-x"] = "LEFT"
     elseif f.mystyle=="arena" then
       d.showDebuffType = false
       d.initialAnchor = "TOPLEFT"
-      d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -d.size-d.spacing*2)
       d.num = 4
+	  d.size = 18
+	  d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -d.size-d.spacing*2)
       d:SetWidth((d.size+d.spacing)*4)
     elseif f.mystyle=='party' then
-      d.num = 8
       d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -2)
+	  d.num = 8
+	  d.size = 18
       d["growth-x"] = "LEFT"
       d:SetWidth((d.size+d.spacing)*4)
 	elseif f.mystyle=="player" and cfg.playerauras=="DEBUFFS" then
-      if f.mystyle=="player" and (class == "DEATHKNIGHT" or (class == "SHAMAN" and IsAddOnLoaded("oUF_boring_totembar"))) then 
-        d:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1, 6+f.height/3)
-	  else
-		d:SetPoint('BOTTOMLEFT', f, 'TOPLEFT', 1.5, 4)
-      end
 	  d['growth-x'] = 'RIGHT'
       d['growth-y'] = 'UP' 
       d.initialAnchor = 'BOTTOMLEFT'
-	  d.num = 18
-	  d.size = 20
-	  d.spacing = 6.1
+	  d.num = 15
+	  d.size = 23
       d:SetHeight((b.size+d.spacing)*2)
       d:SetWidth((b.size+d.spacing)*9)
+	  d.PreSetPosition = lib.PreSetPosition
     end
     d.PostCreateIcon = lib.PostCreateIcon
     d.PostUpdateIcon = lib.PostUpdateIcon
@@ -668,21 +713,17 @@ end
 			t:SetPoint("LEFT", (i - 1) * (width + 3.5), 0)
 			t:SetWidth(width)
 			t:SetHeight(height)
-		
 			local bar = CreateFrame("StatusBar", nil, t)
 			bar:SetWidth(width)
 			bar:SetPoint"BOTTOM"
 			bar:SetHeight(8)
 			t.StatusBar = bar
-			
 			local h = CreateFrame("Frame",nil,t)
 			h:SetFrameLevel(10)
-			
 			local time = lib.gen_fontstring(h, cfg.font, 11, "THINOUTLINE")
 			time:SetPoint("BOTTOMRIGHT",t,"TOPRIGHT", 0, -1)
 			time:SetFontObject"GameFontNormal"
 			t.Time = time
-			
 			local text = lib.gen_fontstring(h, cfg.font, 11, "THINOUTLINE")
 			text:SetPoint("BOTTOMLEFT", t, "TOPLEFT", 0, -1)
 			--text:SetFontObject"GameFontNormal"
@@ -707,12 +748,27 @@ end
     local h = CreateFrame("Frame", nil, f)
     h:SetAllPoints(f.Health)
     h:SetFrameLevel(10)
-    local sp = lib.gen_fontstring(h, cfg.font, 30, "THINOUTLINE")
-    sp:SetPoint("CENTER", f.Health, "CENTER",0,3)
-	if class == "DRUID" then
-		f:Tag(sp, '[mono:wm1][mono:wm2][mono:wm3]')
-	else
-		f:Tag(sp, '[mono:sp][mono:orbs][mono:ws][mono:ls]')
+	if f.mystyle == "party" then
+		local es = lib.gen_fontstring(h, cfg.font, 14, "THINOUTLINE")
+		es:SetPoint("CENTER", f.Power, "BOTTOMRIGHT",0,0)	
+		if class == "SHAMAN" then
+			f:Tag(es, '[raid:earth]')
+		elseif class == "DRUID" then
+			f:Tag(es, '[raid:lb]')
+		elseif class == "PRIEST" then
+			f:Tag(es, '[raid:pom]')
+		end
+	end
+	if f.mystyle == "player" then
+		local sp = lib.gen_fontstring(h, cfg.font, 30, "MONOCHROMEOUTLINE")
+		sp:SetPoint("CENTER", f.Health, "CENTER",0,3)
+		if class == "DRUID" then
+			f:Tag(sp, '[mono:wm1][mono:wm2][mono:wm3]')
+		elseif class == "PRIEST" then
+			f:Tag(sp, '[mono:sp][mono:orbs]')
+		elseif class == "SHAMAN" then
+			f:Tag(sp, '[mono:ws][mono:ls]')
+		end
 	end
   end
   --gen combo points
