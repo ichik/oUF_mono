@@ -525,7 +525,7 @@
 		a.PreSetPosition = lib.PreSetPosition
       end
       a:SetHeight((a.size+a.spacing)*2)
-      a:SetWidth((a.size+a.spacing)*8)
+      a:SetWidth((a.size+a.spacing)*9)
       a.numBuffs = 16
       a.numDebuffs = 16
     elseif f.mystyle=="focus" then
