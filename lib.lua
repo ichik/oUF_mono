@@ -45,7 +45,7 @@
     edgeFile = cfg.backdrop_edge_texture,
     tile = false, tileSize = 0, edgeSize = scale(1), 
 	insets = { left = -scale(1), right = -scale(1), top = -scale(1), bottom = -scale(1)}}
-  
+	
   --backdrop func
   lib.gen_backdrop = function(f)
     f:SetBackdrop(backdrop_tab);
@@ -460,7 +460,7 @@
     else
       icon.remaining:Hide()
     end
-    if unit == 'player' or unit == 'target' then
+    --if unit == 'player' or unit == 'target' then
       icon.duration = duration
       icon.timeLeft = expirationTime
       icon.first = true
@@ -478,7 +478,7 @@
     button.count:ClearAllPoints()
     button.count:SetJustifyH("RIGHT")
     button.count:SetPoint("TOPRIGHT", 2, 2)
-    button.count:SetTextColor(0.7,0.7,0.7)
+    button.count:SetTextColor(1,1,1)
     --helper
     local h = CreateFrame("Frame", nil, button)
     h:SetFrameLevel(0)
@@ -491,13 +491,13 @@
     h2:SetFrameLevel(10)
     button.remaining = lib.gen_fontstring(h2, cfg.font, cfg.ATSize, "THINOUTLINE")
 	--button.remaining:SetShadowColor(0, 0, 0)--button.remaining:SetShadowOffset(2, -1)
-    button.remaining:SetPoint("TOPLEFT", 0, -0.5)
+    button.remaining:SetPoint("BOTTOM", 0, -1)
     --overlay texture for debuff types display
     button.overlay:SetTexture(cfg.auratex)
     button.overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -scale(2), scale(2))
     button.overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", scale(2), -scale(2))
-    button.overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
-    button.overlay.Hide = function(self) self:SetVertexColor(0, 0, 0,0) end
+    button.overlay:SetTexCoord(0.04, 0.96, 0.04, 0.96)
+    button.overlay.Hide = function(self) self:SetVertexColor(0, 0, 0, 0) end
   end
   -- position update for certain class/specs
   lib.PreSetPosition = function(self, num)
@@ -525,9 +525,9 @@
 		a.PreSetPosition = lib.PreSetPosition
       end
       a:SetHeight((a.size+a.spacing)*2)
-      a:SetWidth((a.size+a.spacing)*9)
-      a.numBuffs = 18
-      a.numDebuffs = 18
+      a:SetWidth((a.size+a.spacing)*8)
+      a.numBuffs = 16
+      a.numDebuffs = 16
     elseif f.mystyle=="focus" then
       a:SetHeight((a.size+a.spacing)*2)
       a:SetWidth((a.size+a.spacing)*4)
@@ -552,17 +552,18 @@
       b.initialAnchor = "TOPRIGHT"
       b:SetPoint("TOPRIGHT", f, "TOPLEFT", -b.spacing, -scale(2))
       b["growth-x"] = "LEFT"
-    elseif f.mystyle=="tot" then
+    elseif f.mystyle=="pet" then
       b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -scale(2))
     elseif f.mystyle=="arena" then
       b.showBuffType = true
       b:SetPoint("TOPLEFT", f, "TOPRIGHT", b.spacing, -scale(2))
+	  b.size = 18
       b.num = 4
       b:SetWidth((b.size+b.spacing)*4)
     elseif f.mystyle=='party' then
       b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", scale(2), -b.spacing)
+	  b.spacing = scale(8)
       b.num = 8
-      b.spacing = scale(8)
 	elseif f.mystyle=="player" and cfg.playerauras=="BUFFS" then
 	  b['growth-x'] = 'RIGHT'
       b['growth-y'] = 'UP' 
@@ -583,15 +584,15 @@
     d.initialAnchor = "TOPRIGHT"
     d["growth-y"] = "DOWN"
     d.num = 4
-    d.size = scale(20)
+    d.size = scale(2)
     d.spacing = scale(8)
     d:SetHeight((d.size+d.spacing)*2)
     d:SetWidth((d.size+d.spacing)*5)
     d.showDebuffType = true
-    if f.mystyle=="pet" then
+    if f.mystyle=="tot" then
       d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -scale(2))
       d.initialAnchor = "TOPLEFT"
-    elseif f.mystyle=="tot" then
+    elseif f.mystyle=="pet" then
       d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -scale(2))
       d["growth-x"] = "LEFT"
     elseif f.mystyle=="arena" then
@@ -602,8 +603,9 @@
 	  d:SetPoint("TOPLEFT", f, "TOPRIGHT", d.spacing, -d.size-d.spacing*2)
       d:SetWidth((d.size+d.spacing)*4)
     elseif f.mystyle=='party' then
-      d.num = 8
-      d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -scale(2))
+      d:SetPoint("TOPRIGHT", f, "TOPLEFT", -d.spacing, -2)
+	  d.num = 8
+	  d.size = 18
       d["growth-x"] = "LEFT"
       d:SetWidth((d.size+d.spacing)*4)
 	elseif f.mystyle=="player" and cfg.playerauras=="DEBUFFS" then
@@ -857,7 +859,7 @@ end
     t.bg:SetPoint("TOPLEFT",-scale(2),scale(2))
     t.bg:SetPoint("BOTTOMRIGHT",scale(2),-scale(2))
     t.bg:SetBackdrop(backdrop_tab);
-    t.bg:SetBackdropColor(.1,.1,.1,1)
+    t.bg:SetBackdropColor(0,0,0,0)
     t.bg:SetBackdropBorderColor(.3,.3,.3,1)
 	t.remaining = lib.gen_fontstring(t, cfg.font, cfg.ATSize-2, "THINOUTLINE")
 	t.remaining:SetPoint('BOTTOM', t, 0, 0)

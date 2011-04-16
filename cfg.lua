@@ -63,7 +63,7 @@
   cfg.PEpos = {"TOPLEFT", "oUF_monoPlayerFrame", "BOTTOMLEFT", 0, -37} -- pet
   cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -42} -- ToT
   cfg.Fpos = {"TOPLEFT", "oUF_monoTargetFrame", "TOPRIGHT", 3, 0} -- focus
-  cfg.FTpos = {"TOPLEFT", "oUF_monoTargetFrame", "BOTTOMLEFT", 0, -37}
+  cfg.FTpos = {"TOPLEFT", "oUF_monoFocusFrame", "BOTTOMLEFT", 0, -12}
   cfg.PApos = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 95, 352} -- party
     cfg.PAspacing = 40 -- spacing between party units
   cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Arena
@@ -124,6 +124,7 @@
 	cfg.healoverflow = 1 							-- overhealing display (1 = disabled, may take values higher than 1)
   cfg.healtext = false 								-- show/hide heal prediction text
   cfg.ShowDeficit = true
+  cfg.raidclasscolor = false
 	
   -- HANDOVER
   ns.cfg = cfg

@@ -121,15 +121,15 @@
   
   local PostUpdateHealth = function(s, unit)
     local r, g, b, t
-    --[[if(UnitIsPlayer(unit)) then
+    if(UnitIsPlayer(unit)) and cfg.raidclasscolor then
       local _, class = UnitClass(unit)
       t = oUF.colors.class[class]
-    else]]
+    else
       r, g, b = .5, .5, .5
-    --end
-    --[[if(t) then
+    end
+    if(t) then
       r, g, b = t[1], t[2], t[3]
-    end]]--
+    end
     if(b) then
       local bg = s.bg
       if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
@@ -216,21 +216,21 @@
     h:SetAllPoints(f.Health)
     h:SetFrameLevel(10)
     local name = lib.gen_fontstring(h, cfg.font, cfg.fontsize)
-     if cfg.ShowDeficit then
+	if cfg.ShowDeficit then
 		local hpval = lib.gen_fontstring(h, cfg.font, cfg.fontsize-1)
 		hpval:SetPoint("CENTER", f.Health, "BOTTOM",0,8)
 		hpval:SetShadowOffset(1.25, -1.25)
+		if f.mystyle == "mtframe" then
+			f:Tag(hpval, '[mono:hpperc]')
+		else
+			f:Tag(hpval, '[mono:hpraid]')
+		end
 	end
     name:SetPoint("CENTER", f.Health, "CENTER",0,5)
     name:SetShadowOffset(1.25, -1.25)
     name:SetJustifyH("LEFT")
 	name.overrideUnit = true
     f:Tag(name, '[mono:gridcolor][mono:gridname]')
-    if f.mystyle == "mtframe" and cfg.ShowDeficit then
-      f:Tag(hpval, '[mono:hpperc]')
-    elseif cfg.ShowDeficit then
-      f:Tag(hpval, '[mono:hpraid]')
-    end
   end
   
   lib_raid.gen_ppbar = function(f)
