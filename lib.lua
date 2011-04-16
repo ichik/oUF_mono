@@ -765,7 +765,9 @@ end
 		if class == "DRUID" then
 			f:Tag(sp, '[mono:wm1][mono:wm2][mono:wm3]')
 		elseif class == "PRIEST" then
-			f:Tag(sp, '[mono:sp][mono:orbs]')
+			f:Tag(sp, '[mono:orbs]')
+		elseif class == "PALADIN" or class == "WARLOCK" then
+			f:Tag(sp, '[mono:sp]')
 		elseif class == "SHAMAN" then
 			f:Tag(sp, '[mono:ws][mono:ls]')
 		end
