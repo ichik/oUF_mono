@@ -34,7 +34,7 @@
   cfg.auratimers = true 			-- aura timers
     cfg.ATIconSizeThreshold = 10	-- how big some icon should be to display the custom timer
     cfg.ATSize = 11  				-- aura timer font size
-	cfg.PlayerTimersOnly = true  	-- show timers only for auras cast by player	(NEW!)
+	cfg.PlayerTimersOnly = false  	-- show timers only for auras cast by player	(NEW!)
   cfg.showfaketarget = true 		-- fake target bars that spawn if you don't have anything targeted
   cfg.RMalpha = 0.6 				-- raid mark alpha
   cfg.RMsize = 16 					-- raid mark size
