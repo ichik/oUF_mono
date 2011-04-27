@@ -75,8 +75,8 @@ oUF.Tags['mono:color'] = function(u, r)
 	
 	if (UnitIsTapped(u) and not UnitIsTappedByPlayer(u)) then
 		return hex(oUF.colors.tapped)
-	elseif (u == "pet") and GetPetHappiness() then -- remove in 4.1
-		return hex(oUF.colors.happiness[GetPetHappiness()])
+--	elseif (u == "pet") and GetPetHappiness() then -- remove in 4.1
+	--	return hex(oUF.colors.happiness[GetPetHappiness()])
 	elseif (UnitIsPlayer(u)) then
 		return hex(oUF.colors.class[class])
 	elseif reaction then
