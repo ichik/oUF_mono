@@ -82,6 +82,9 @@ raid_debuffs = {
             [GetSpellInfo(83099)] = 7, -- Lightning Rod
             [GetSpellInfo(82285)] = 7, -- Elemental Stasis
             [GetSpellInfo(92488)] = 8, -- Gravity Crush
+			[GetSpellInfo(92075)] = 8, -- Gravity Core (heroic)
+			[GetSpellInfo(92067)] = 8, -- Static Overload (heroic)
+			
             --Cho'gall
             [GetSpellInfo(86028)] = 6, -- Cho's Blast
             [GetSpellInfo(86029)] = 6, -- Gall's Blast

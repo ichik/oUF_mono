@@ -66,8 +66,8 @@
   cfg.FTpos = {"TOPLEFT", "oUF_monoFocusFrame", "BOTTOMLEFT", 0, -12}
   cfg.PApos = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 95, 352} -- party
     cfg.PAspacing = 40 -- spacing between party units
-  cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Arena
-  cfg.BOpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Boss
+  cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -120, 362}			-- Arena
+  cfg.BOpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -120, 362}			-- Boss
     cfg.ABspacing = 56 -- spacing between arena and boss units
   cfg.RAIDpos = {"TOPLEFT", "UIParent", "BOTTOM", -164, 137} 				-- Raid frames
   

@@ -16,6 +16,9 @@
   -- my config 
   if GetUnitName("player") == "Strigoy" then
 	cfg.playerauras = "DEBUFFS"
+	cfg.PApos = {"BOTTOMRIGHT", "oUF_monoPlayerFrame", "TOPLEFT", -50, 70}
+	cfg.ARpos = {"BOTTOMLEFT", "oUF_monoTargetFrame", "TOPRIGHT", 50, 70}
+	cfg.BOpos = {"BOTTOMLEFT", "oUF_monoTargetFrame", "TOPRIGHT", 50, 70}
   end
 
   -----------------------------
@@ -571,7 +574,7 @@
 	  b.num = 15
 	  b.size = 23
       b:SetHeight((b.size+b.spacing)*2)
-      b:SetWidth((b.size+b.spacing)*9)
+      b:SetWidth((b.size+b.spacing)*8)
 	  b.PreSetPosition = lib.PreSetPosition
     end
     b.PostCreateIcon = lib.PostCreateIcon
@@ -615,7 +618,7 @@
 	  d.num = 15
 	  d.size = 23
       d:SetHeight((d.size+d.spacing)*2)
-      d:SetWidth((d.size+d.spacing)*9)
+      d:SetWidth((d.size+d.spacing)*8)
 	  d.PreSetPosition = lib.PreSetPosition
     end
     d.PostCreateIcon = lib.PostCreateIcon
@@ -687,16 +690,16 @@
 	ebText:SetPoint('CENTER', eb, 'CENTER', 0, 0)
 	eb.Text = ebText]]
 	f.EclipseBar = eb
-	
 	local ebInd = lib.gen_fontstring(h, cfg.font, 16, "THINOUTLINE")
 	ebInd:SetPoint('CENTER', eb, 'CENTER', 0, 0)
 	f.EclipseBar.PostDirectionChange = function(element, unit)
-	if(element.directionIsLunar) then
-		ebInd:SetText("|cff4478BC>>>|r")
-	else
-		ebInd:SetText("|cffE5994C<<<|r")
+		local dir = GetEclipseDirection()
+		if dir=="sun" then
+			ebInd:SetText("|cff4478BC>>>|r")
+		elseif dir=="moon" then
+			ebInd:SetText("|cffE5994C<<<|r")
+		end
 	end
-end
   end
   --gen TotemBar for shamans
   lib.gen_TotemBar = function(f)
@@ -848,11 +851,26 @@ end
     hl:Hide()
     f.Highlight = hl
   end
-  --gen trinket
+  --gen trinket and aura tracker for arena frames
+  lib.UpdateAuraTracker = function(self, elapsed)
+	if self.active then
+	  self.timeleft = self.timeleft - elapsed
+	  if self.timeleft <= 5 then
+		self.text:SetTextColor(1, .3, .2)
+	  else
+		self.text:SetTextColor(.9, .7, .2)
+	  end
+	  if self.timeleft <= 0 then
+		self.icon:SetTexture('')
+		self.text:SetText('')
+	  end	
+	  self.text:SetFormattedText('%.1f', self.timeleft)
+	end
+  end
   lib.gen_arenatracker = function(f)
     t = CreateFrame("Frame", nil, f)
-    t:SetSize(20,20)
-    t:SetPoint("TOP", f, "BOTTOM", 1, 4)
+    t:SetSize(21,21)
+    t:SetPoint("CENTER", f.Power, "CENTER", 0, 0)
     t:SetFrameLevel(30)
     t:SetAlpha(0.8)
     t.trinketUseAnnounce = true
@@ -867,6 +885,16 @@ end
 	t.remaining:SetPoint('BOTTOM', t, 0, 0)
     t:SetScript("OnUpdate", lib.CreateAuraTimer)
     f.Trinket = t
+	at = CreateFrame('Frame', nil, f)
+	at:SetAllPoints(f.Trinket)
+	at:SetFrameStrata('HIGH')
+	at.icon = at:CreateTexture(nil, 'ARTWORK')
+	at.icon:SetAllPoints(at)
+	at.icon:SetTexCoord(0.07,0.93,0.07,0.93)
+	at.text = lib.gen_fontstring(at, cfg.font, cfg.ATSize-1, "THINOUTLINE")
+	at.text:SetPoint('CENTER', at, 0, 0)
+	at:SetScript('OnUpdate', lib.UpdateAuraTracker)
+	f.AuraTracker = at
   end
   --gen current target indicator
   lib.gen_targeticon = function(f)
