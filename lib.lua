@@ -881,9 +881,6 @@
     t.bg:SetBackdrop(backdrop_tab);
     t.bg:SetBackdropColor(0,0,0,0)
     t.bg:SetBackdropBorderColor(.3,.3,.3,1)
-	t.remaining = lib.gen_fontstring(t, cfg.font, cfg.ATSize-2, "THINOUTLINE")
-	t.remaining:SetPoint('BOTTOM', t, 0, 0)
-    t:SetScript("OnUpdate", lib.CreateAuraTimer)
     f.Trinket = t
 	at = CreateFrame('Frame', nil, f)
 	at:SetAllPoints(f.Trinket)
