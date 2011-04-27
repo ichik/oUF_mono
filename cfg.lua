@@ -59,14 +59,14 @@
   -- Frames position
   cfg.Ppos = {"TOP","UIParent","BOTTOM", -235, 275} 						-- Player
   cfg.Tpos = {"TOP","UIParent","BOTTOM", 235, 275} 							-- Target
-  cfg.PEpos = {"TOPLEFT", "oUF_monoPlayerFrame", "BOTTOMLEFT", 0, -37}		-- Pet
-  cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -37}	-- ToT
-  cfg.Fpos = {"TOPRIGHT", "oUF_monoPlayerFrame", "BOTTOMRIGHT", 0, -37}		-- Focus
-  cfg.FTpos = {"TOPLEFT", "oUF_monoTargetFrame", "BOTTOMLEFT", 0, -37}		-- Focus target		(NEW!)
-  cfg.PApos = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 105, 352}				-- Party
+  cfg.PEpos = {"TOPLEFT", "oUF_monoPlayerFrame", "BOTTOMLEFT", 0, -38}		-- Pet
+  cfg.TTpos = {"TOPRIGHT", "oUF_monoTargetFrame", "BOTTOMRIGHT", 0, -38}	-- ToT
+  cfg.Fpos = {"TOPRIGHT", "oUF_monoPlayerFrame", "BOTTOMRIGHT", 0, -38}		-- Focus
+  cfg.FTpos = {"TOPLEFT", "oUF_monoTargetFrame", "BOTTOMLEFT", 0, -38}		-- Focus target		(NEW!)
+  cfg.PApos = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 120, 362}			-- Party
     cfg.PAspacing = 40 -- spacing between party units
-  cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Arena
-  cfg.BOpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -127, 392}			-- Boss
+  cfg.ARpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -120, 362}			-- Arena
+  cfg.BOpos = {"BOTTOMRIGHT", "UIParent", "BOTTOMRIGHT", -120, 362}			-- Boss
     cfg.ABspacing = 56 -- spacing between arena and boss units
   cfg.RAIDpos = {"TOPLEFT", "UIParent", "BOTTOM", -156, 177} 				-- Raid frames
   
