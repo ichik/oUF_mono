@@ -256,16 +256,11 @@ oUF:Factory(function(self)
 
   local init = [[
 	self:SetAttribute("*type2", "menu")
-	self:SetAttribute("initial-width", %d)
 	self:SetWidth(%d)
-	self:SetAttribute("initial-height", %d)
 	self:SetHeight(%d)
 	self:SetScale(%f)
-	
 	if self:GetAttribute("unitsuffix") == "pet" then
-		self:SetAttribute("initial-width", %d)
 		self:SetWidth(%d)
-		self:SetAttribute("initial-height", %d)
 		self:SetHeight(%d)
     end
   ]]
@@ -274,7 +269,7 @@ oUF:Factory(function(self)
   if cfg.showparty then
     self:SetActiveStyle("monoParty") 
     local party = self:SpawnHeader("monoParty",nil,visible,
-	'oUF-initialConfigFunction', init:format(w,w,h,h,s,ph,ph,ph,ph),
+	'oUF-initialConfigFunction', init:format(w,h,s,ph,ph),
 	'showParty',true,
 	'template','oUF_monoPartyPet',
 	--'useOwnerUnit', true, 

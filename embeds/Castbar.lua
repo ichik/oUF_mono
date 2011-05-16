@@ -107,7 +107,7 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 			self.channelingTicks = channelingTicks[spell] or 0
 			cast.setBarTicks(self, self.channelingTicks)
 		end
-	elseif (unit == "target" or unit == "focus") and self.interrupt then
+	elseif (unit == "target" or unit == "focus" or (unit and unit:find("boss%d"))) and self.interrupt then
 		self:SetStatusBarColor(cfg.interruptcb[1],cfg.interruptcb[2],cfg.interruptcb[3],1)
 	else
 		self:SetStatusBarColor(cfg.cbcolor[1], cfg.cbcolor[2], cfg.cbcolor[3],1)
