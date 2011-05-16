@@ -316,7 +316,6 @@
       i:SetPoint("RIGHT", s, "LEFT", -2, 0)
       h2:SetFrameLevel(9)
       b:Hide() txt:Hide() t:Hide() h:Hide()
-
     elseif f.mystyle == "arena" then
       s:SetSize(f.width-(f.height/1.4+4),f.height/1.4)
       s:SetPoint("TOPRIGHT",f.Power,"BOTTOMRIGHT",0,-4)

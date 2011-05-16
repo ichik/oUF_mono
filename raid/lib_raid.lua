@@ -372,10 +372,10 @@
 	local h = CreateFrame"Frame" h:SetParent(f.Health) h:SetAllPoints(f.Health) h:SetFrameLevel(20)
 	if cfg.healtext then
 	  local ht = lib.gen_fontstring(h, cfg.font, cfg.fontsize-2)
-      ht:SetPoint("CENTER", f.Health, "RIGHT",0,1)
-      ht:SetShadowOffset(1.25, -1.25)
-      ht:SetJustifyH("LEFT")
-      f:Tag(ht, '[mono:heal]')
+	  ht:SetPoint("CENTER", f.Health, "RIGHT",0,1)
+	  ht:SetShadowOffset(1.25, -1.25)
+	  ht:SetJustifyH("LEFT")
+	  f:Tag(ht, '[mono:heal]')
 	end
   end
   

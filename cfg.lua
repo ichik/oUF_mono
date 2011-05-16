@@ -55,7 +55,7 @@
     cfg.targetCBwidth = 210			-- target cb width
     cfg.targetCBheight = 17			-- target cb height
   cfg.cbcolor = {.3,.45,.65}		-- castbar color
-  cfg.interruptcb = {1, 0.49, 0}	-- color setting for uninterruptable casts
+  cfg.interruptcb = {1,.49,0}		-- color setting for uninterruptable casts
 
   -- Frames position
   cfg.Ppos = {"TOP","UIParent","BOTTOM", -235, 295} -- player
